@@ -6,7 +6,10 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { 
+  MatButton, 
+  MatButtonModule 
+} from '@angular/material/button';
 import {
   MatCard,
   MatCardActions,
@@ -40,6 +43,12 @@ import {
   getCurrentSession,
   getPlannedPeriods,
 } from '../store/app.selectors';
+import {
+  MatMenuModule
+} from '@angular/material/menu';
+import {
+  MatIconModule
+} from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
@@ -56,7 +65,10 @@ import {
     MatCardActions,
     PeriodNamePipe,
     RouterLink,
-    MatButton
+    MatButton,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -90,6 +102,18 @@ export class HomeComponent implements OnInit {
     this.hasNoPeriods$ = this.periods$.pipe(
       map(x => !x?.length)
     );
+  }
+  
+
+  changeTheme(theme: 'light'| 'dark' | 'system') {
+    localStorage.setItem('theme', theme)
+
+    // Duplicate code 1
+    const mode = localStorage.getItem('theme') === 'dark' || 
+      ((!('theme' in localStorage) || localStorage.getItem('theme') === 'system') 
+        && window.matchMedia('(prefers-color-scheme: dark)').matches)
+
+    document.documentElement.setAttribute('data-theme', mode ? 'dark' : 'light');
   }
 
 }

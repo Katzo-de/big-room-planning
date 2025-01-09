@@ -7,14 +7,21 @@
     .home-content {
         width: 800px;
         height: 100%;
+        margin-top: 5rem;
         display: flex;
         flex-direction: column;
         overflow: auto;
 
+        .home-header {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
         .greeting {
             font-size: 2rem;
-            margin-top: 5rem;
-            margin-bottom: 2rem;
         }
 
         .period-card {
