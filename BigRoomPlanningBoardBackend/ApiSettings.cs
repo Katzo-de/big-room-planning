@@ -26,6 +26,11 @@ namespace BigRoomPlanningBoardBackend
         public string ConnectionString { get; set; }
 
         /// <summary>
+        /// Default DatabaseName for initial setup 
+        /// </summary>
+        public string DefaultDatabaseName { get; set; }
+
+        /// <summary>
         /// If true, a set of default Data will be created
         /// </summary>
         public bool CreateDebugData { get; set; }

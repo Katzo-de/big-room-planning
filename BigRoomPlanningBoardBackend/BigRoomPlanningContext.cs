@@ -72,9 +72,8 @@ namespace BigRoomPlanningBoardBackend
                     break;
                 case DataBaseProvider.MongoDB:
                     var client = new MongoClient(apiSettingsOptions.Value.ConnectionString);
-                    var databaseName = MongoUrl.Create(apiSettingsOptions.Value.ConnectionString).DatabaseName;
-
-                    options.UseMongoDB(client, databaseName);
+                    var databaseName = MongoUrl.Create(apiSettingsOptions.Value.ConnectionString).DatabaseName;                    
+                    options.UseMongoDB(client, databaseName ?? apiSettingsOptions.Value.DefaultDatabaseName);
                     break;
                 case DataBaseProvider.Postgress:
                     options.UseNpgsql(apiSettingsOptions.Value.ConnectionString);
