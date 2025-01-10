@@ -3,26 +3,28 @@
 
 /* https://v18.material.angular.io/guide/theming#custom-theme */
 /* https://github.com/angular/components/blob/18.2.x/src/material/schematics/ng-generate/m3-theme/README.md */
-@use 'themes/m3-theme-basic.scss' as m3-theme;
+@use 'themes/m3-theme.scss' as m3-theme;
 
 @include mat.core();
 
 :root {
+    @include mat.core-theme(m3-theme.$light-theme);
+    @include mat.all-component-themes(m3-theme.$light-theme);
     @include mat.all-component-bases(m3-theme.$light-theme);
     @include mat.all-component-colors(m3-theme.$light-theme);
     @include mat.all-component-typographies(m3-theme.$light-theme);
     @include mat.all-component-densities(m3-theme.$light-theme);
-    @include mat.all-component-themes(m3-theme.$light-theme);
     @include mat.system-level-colors(m3-theme.$light-theme);
     @include mat.system-level-typography(m3-theme.$light-theme);
 }
 
 [data-theme='dark'] {
+    @include mat.core-theme(m3-theme.$dark-theme);
+    @include mat.all-component-themes(m3-theme.$dark-theme);
     @include mat.all-component-bases(m3-theme.$dark-theme);
     @include mat.all-component-colors(m3-theme.$dark-theme);
     @include mat.all-component-typographies(m3-theme.$dark-theme);
     @include mat.all-component-densities(m3-theme.$dark-theme);
-    @include mat.all-component-themes(m3-theme.$dark-theme);
     @include mat.system-level-colors(m3-theme.$dark-theme);
     @include mat.system-level-typography(m3-theme.$dark-theme);
 }
