@@ -8,11 +8,11 @@ mat-card-header {
 }
 
 .highlight-fullfilled:not(.highlight-unfullfilled) {
-  border-color: rgb(174, 241, 97);
+  border-color: var(--sys-tertiary-fixed-dim);
 }
 
 .highlight-unfullfilled {
-  border-color: rgb(255, 180, 171);
+  border-color: var(--sys-error);
 }
 
 .dependency-container {
@@ -33,10 +33,10 @@ mat-card-header {
       height: 100%;
       cursor: pointer;
 
-      color: rgb(255, 180, 171);
+      color: var(--sys-error);
 
       &.fullfilled {
-        color: rgb(174, 241, 97);
+        color: var(--sys-tertiary-fixed-dim);
       }
 
       mat-icon {
@@ -52,12 +52,13 @@ mat-card-header {
   flex-direction: column;
   min-width: 180px;
   max-width: 280px;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--sys-surface-container);
   padding: 6px 0;
 }
 
 .example-menu-item {
   background-color: transparent;
+  color: var(--sys-on-surface);
   cursor: pointer;
   border: none;
 
@@ -73,9 +74,9 @@ mat-card-header {
 }
 
 .example-menu-item:hover {
-  background-color: rgb(208, 208, 208);
+  background-color: var(--sys-surface-container-high);
 }
 
 .example-menu-item:active {
-  background-color: rgb(170, 170, 170);
+  background-color: var(--sys-surface-container-highest);
 }

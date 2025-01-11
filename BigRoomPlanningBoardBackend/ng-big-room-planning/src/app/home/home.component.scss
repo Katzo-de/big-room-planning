@@ -6,8 +6,7 @@
 
     .home-content {
         width: 800px;
-        height: 100%;
-        margin-top: 5rem;
+        padding-top: 5rem;
         display: flex;
         flex-direction: column;
         overflow: auto;
@@ -17,7 +16,7 @@
             width: 100%;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            padding-bottom: 2rem;
         }
 
         .greeting {
