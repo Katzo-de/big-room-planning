@@ -29,6 +29,66 @@
     @include mat.system-level-typography(m3-theme.$dark-theme);
 }
 
+.scrollbar-hide::-webkit-scrollbar-track {
+    background: #0000;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    width: 0px;
+}
+
+.scrollbar-large::-webkit-scrollbar-track {
+    background: #0000;
+    cursor: pointer
+}
+.scrollbar-large::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.scrollbar-large::-webkit-scrollbar-thumb {
+    background-color: var(--sys-on-surface);
+    border-radius: 10px;
+    transition: background-color .3s ease;
+}
+.scrollbar-large::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sys-on-surface-variant);
+}
+
+
+.scrollbar::-webkit-scrollbar-track {
+    background: #0000;
+    cursor: pointer;
+}
+.scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--sys-on-surface);
+    border-radius: 10px;
+    transition: background-color .3s ease;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sys-on-surface-variant);
+}
+
+.scrollbar-mini::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scrollbar-mini::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+.scrollbar-mini::-webkit-scrollbar-thumb {
+    background-color: var(--sys-on-surface);
+    border-radius: 10px;
+
+}
+.scrollbar-mini::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sys-on-surface-variant);
+}
+
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
