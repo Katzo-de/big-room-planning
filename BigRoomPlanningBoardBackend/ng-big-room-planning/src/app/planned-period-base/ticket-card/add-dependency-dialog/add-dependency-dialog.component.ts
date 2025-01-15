@@ -1,6 +1,5 @@
 import {
   AsyncPipe,
-  NgFor,
 } from '@angular/common';
 import {
   Component,
@@ -58,6 +57,15 @@ import {
   getSquads,
   getTickets,
 } from '../../../store/app.selectors';
+import { 
+  SquadNamePipe 
+} from '../../../squad-name.pipe';
+import {
+  MatChipsModule 
+} from '@angular/material/chips';
+import {
+  MatDividerModule
+} from '@angular/material/divider';
 
 interface TicketWithDetails extends ITicket {
   dependencyType: 'dependency' | 'dependant' | 'none';
@@ -74,7 +82,6 @@ interface TicketWithDetails extends ITicket {
   imports: [
     MatDialogModule,
     ReactiveFormsModule,
-    NgFor,
     AsyncPipe,
     MatButton,
     MatInput,
@@ -83,7 +90,10 @@ interface TicketWithDetails extends ITicket {
     MatIconButton,
     MatIcon,
     MatTooltip,
-    IterationNamePipe
+    IterationNamePipe,
+    SquadNamePipe,
+    MatChipsModule,
+    MatDividerModule
   ],
   templateUrl: './add-dependency-dialog.component.html',
   styleUrl: './add-dependency-dialog.component.scss'

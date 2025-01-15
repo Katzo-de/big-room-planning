@@ -10,10 +10,8 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { MatButton } from '@angular/material/button';
 import {
   MatCard,
-  MatCardActions,
   MatCardContent,
   MatCardHeader,
 } from '@angular/material/card';
@@ -64,8 +62,6 @@ interface DependencyWithInfo extends IDependency {
   imports: [
     MatCard,
     MatCardHeader,
-    MatCardActions,
-    MatButton,
     MatCardContent,
     AsyncPipe,
     CdkMenu,
@@ -251,6 +247,10 @@ export class TicketCardComponent implements OnChanges {
 
   addDependency() {
     this.matDialog.open(AddDependencyDialogComponent, {
+      height: '90vh',
+      maxHeight: '90vh',
+      width: '60vw',
+      maxWidth: '60vw',
       data: this.ticket,
       disableClose: true
     });
