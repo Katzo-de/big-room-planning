@@ -3,14 +3,15 @@ import {
   Input,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-
+import {MatCardModule} from '@angular/material/card';
 import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-connection-lost',
   standalone: true,
   imports: [
-    MatButton
+    MatButton,
+    MatCardModule
   ],
   templateUrl: './connection-lost.component.html',
   styleUrl: './connection-lost.component.scss'

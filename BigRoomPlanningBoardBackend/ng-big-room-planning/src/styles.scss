@@ -1,6 +1,94 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 
+/* https://v18.material.angular.io/guide/theming#custom-theme */
+/* https://github.com/angular/components/blob/18.2.x/src/material/schematics/ng-generate/m3-theme/README.md */
+@use 'themes/m3-theme.scss' as m3-theme;
+
+@include mat.core();
+
+:root {
+    @include mat.core-theme(m3-theme.$light-theme);
+    @include mat.all-component-themes(m3-theme.$light-theme);
+    @include mat.all-component-bases(m3-theme.$light-theme);
+    @include mat.all-component-colors(m3-theme.$light-theme);
+    @include mat.all-component-typographies(m3-theme.$light-theme);
+    @include mat.all-component-densities(m3-theme.$light-theme);
+    @include mat.system-level-colors(m3-theme.$light-theme);
+    @include mat.system-level-typography(m3-theme.$light-theme);
+}
+
+[data-theme='dark'] {
+    @include mat.core-theme(m3-theme.$dark-theme);
+    @include mat.all-component-themes(m3-theme.$dark-theme);
+    @include mat.all-component-bases(m3-theme.$dark-theme);
+    @include mat.all-component-colors(m3-theme.$dark-theme);
+    @include mat.all-component-typographies(m3-theme.$dark-theme);
+    @include mat.all-component-densities(m3-theme.$dark-theme);
+    @include mat.system-level-colors(m3-theme.$dark-theme);
+    @include mat.system-level-typography(m3-theme.$dark-theme);
+}
+
+.scrollbar-hide::-webkit-scrollbar-track {
+    background: #0000;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    width: 0px;
+}
+
+.scrollbar-large::-webkit-scrollbar-track {
+    background: #0000;
+    cursor: pointer
+}
+.scrollbar-large::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.scrollbar-large::-webkit-scrollbar-thumb {
+    background-color: var(--sys-on-surface);
+    border-radius: 10px;
+    transition: background-color .3s ease;
+}
+.scrollbar-large::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sys-on-surface-variant);
+}
+
+
+.scrollbar::-webkit-scrollbar-track {
+    background: #0000;
+    cursor: pointer;
+}
+.scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--sys-on-surface);
+    border-radius: 10px;
+    transition: background-color .3s ease;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sys-on-surface-variant);
+}
+
+.scrollbar-mini::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scrollbar-mini::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+.scrollbar-mini::-webkit-scrollbar-thumb {
+    background-color: var(--sys-on-surface);
+    border-radius: 10px;
+
+}
+.scrollbar-mini::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sys-on-surface-variant);
+}
+
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
