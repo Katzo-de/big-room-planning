@@ -30,21 +30,28 @@ $acceptedColor:  rgb(174, 241, 97);
         height: calc(200px - calc(48px + 2.5rem));
         overflow: hidden;
 
-        .risk-text {
-            margin-top: .2rem;
-            height: 0.8rem;
-            font-size: 0.8rem;
-            color: $notAcceptedColor;
+        .risk-texts {
+            display: flex;
+            flex-direction: row;
+            gap: 0.25rem;
 
-            text-wrap: nowrap;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-
-            &.accepted {
-                color: $acceptedColor;
+            .risk-text {
+                margin-top: .2rem;
+                height: 0.8rem;
+                font-size: 0.8rem;
+                color: $notAcceptedColor;
+    
+                text-wrap: nowrap;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+    
+                &.accepted {
+                    color: $acceptedColor;
+                }
             }
         }
+
     }
 
     .risk-button {

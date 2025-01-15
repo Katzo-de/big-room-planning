@@ -57,6 +57,7 @@ import {
 import {
   EditSquadSprintStatsDialogComponent,
 } from './edit-squad-sprint-stats-dialog/edit-squad-sprint-stats-dialog.component';
+import { SquadNamePipe } from '../../squad-name.pipe';
 
 @Component({
   selector: 'app-sprint-column',
@@ -67,7 +68,8 @@ import {
     NgFor,
     NgClass,
     DragDropModule,
-    TicketCardComponent
+    TicketCardComponent,
+    SquadNamePipe
   ],
   templateUrl: './sprint-column.component.html',
   styleUrl: './sprint-column.component.scss'

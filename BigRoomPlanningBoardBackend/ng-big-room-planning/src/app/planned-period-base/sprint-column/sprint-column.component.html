@@ -7,8 +7,14 @@
             Risks: {{ (risks$ | async).length }}
         </div>
         <div class="risk-body">
-            <div *ngFor="let risk of risks$ | async" [class.accepted]="risk.accepted" class="risk-text">{{risk.text}}
-            </div>
+            @for (risk of risks$ | async; track risk.riskId) {
+                <div class="risk-texts"> 
+                    @if (mode !== 'squad') {
+                        <span [class.accepted]="risk.accepted" class="risk-text">[{{risk.squadId | squadName | async}}]</span>
+                    }
+                    <span [class.accepted]="risk.accepted" class="risk-text">{{risk.text}}</span>
+                </div>
+            }
         </div>
         @if ((risks$ | async).length) {
         <button mat-button (click)="openRiskDialog()" i18n>Details/Add Risk</button>
