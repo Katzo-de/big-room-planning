@@ -4,6 +4,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import {
   AsyncPipe,
+  DatePipe,
   NgClass,
   NgFor,
 } from '@angular/common';
@@ -57,6 +58,8 @@ import {
 import {
   EditSquadSprintStatsDialogComponent,
 } from './edit-squad-sprint-stats-dialog/edit-squad-sprint-stats-dialog.component';
+import { SquadNamePipe } from '../../squad-name.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-sprint-column',
@@ -67,7 +70,10 @@ import {
     NgFor,
     NgClass,
     DragDropModule,
-    TicketCardComponent
+    TicketCardComponent,
+    SquadNamePipe,
+    DatePipe,
+    MatTooltipModule,
   ],
   templateUrl: './sprint-column.component.html',
   styleUrl: './sprint-column.component.scss'
@@ -85,6 +91,7 @@ export class SprintColumnComponent implements OnInit, OnChanges, OnDestroy {
 
   capacity$: Observable<number>
   backgroundNoise$: Observable<number>
+  note$: Observable<string>
 
   sprint$: Observable<Sprint>;
 
@@ -141,7 +148,7 @@ export class SprintColumnComponent implements OnInit, OnChanges, OnDestroy {
         const squadSprintStats$ = this.store$.pipe(
           select(getSquadSprintStats),
           map(stats => stats.find(x => x.sprintId === this.sprintId && x.squadId === this.squadId)),
-          map(stats => !stats ? ({ capacity: 0, backgroundNoise: 0 }) : stats)
+          map(stats => !stats ? ({ capacity: 0, backgroundNoise: 0, note: '' }) : stats)
         )
   
         this.capacity$ = squadSprintStats$.pipe(
@@ -150,6 +157,10 @@ export class SprintColumnComponent implements OnInit, OnChanges, OnDestroy {
         
         this.backgroundNoise$ = squadSprintStats$.pipe(
           map(stats => stats.backgroundNoise)
+        );
+
+        this.note$ = squadSprintStats$.pipe(
+          map(stats => stats.note)
         );
       }
 
@@ -199,14 +210,16 @@ export class SprintColumnComponent implements OnInit, OnChanges, OnDestroy {
   editStats() {
     combineLatest([
       this.capacity$,
-      this.backgroundNoise$
+      this.backgroundNoise$,
+      this.note$
     ]).pipe(
       first()
-    ).subscribe(([capacity, backgroundNoise]) => {
+    ).subscribe(([capacity, backgroundNoise, note]) => {
       
       const data: ISquadSprintStats = {
         capacity,
         backgroundNoise,
+        note,
         sprintId: this.sprintId,
         squadId: this.squadId
       }

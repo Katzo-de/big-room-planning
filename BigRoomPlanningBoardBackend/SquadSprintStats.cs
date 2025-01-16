@@ -12,5 +12,7 @@ namespace BigRoomPlanningBoardBackend
         public double Capacity { get; set; }
 
         public double BackgroundNoise { get; set; }
+
+        public string Note { get; set; }
     }
 }

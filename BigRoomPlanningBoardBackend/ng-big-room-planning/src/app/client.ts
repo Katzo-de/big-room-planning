@@ -310,6 +310,7 @@ export class AddOrUpdateSquadSprintStatsEvent extends Event implements IAddOrUpd
     sprintId?: number;
     capacity?: number;
     backgroundNoise?: number;
+    note?: string | undefined;
 
     constructor(data?: IAddOrUpdateSquadSprintStatsEvent) {
         super(data);
@@ -323,6 +324,7 @@ export class AddOrUpdateSquadSprintStatsEvent extends Event implements IAddOrUpd
             this.sprintId = _data["sprintId"];
             this.capacity = _data["capacity"];
             this.backgroundNoise = _data["backgroundNoise"];
+            this.note = _data["note"];
         }
     }
 
@@ -339,6 +341,7 @@ export class AddOrUpdateSquadSprintStatsEvent extends Event implements IAddOrUpd
         data["sprintId"] = this.sprintId;
         data["capacity"] = this.capacity;
         data["backgroundNoise"] = this.backgroundNoise;
+        data["note"] = this.note;
         super.toJSON(data);
         return data;
     }
@@ -349,6 +352,7 @@ export interface IAddOrUpdateSquadSprintStatsEvent extends IEvent {
     sprintId?: number;
     capacity?: number;
     backgroundNoise?: number;
+    note?: string | undefined;
 }
 
 export class AddPlannedPeriodEvent extends Event implements IAddPlannedPeriodEvent {
@@ -1404,6 +1408,7 @@ export class SquadSprintStats implements ISquadSprintStats {
     sprintId?: number;
     capacity?: number;
     backgroundNoise?: number;
+    note?: string | undefined;
 
     constructor(data?: ISquadSprintStats) {
         if (data) {
@@ -1420,6 +1425,7 @@ export class SquadSprintStats implements ISquadSprintStats {
             this.sprintId = _data["sprintId"];
             this.capacity = _data["capacity"];
             this.backgroundNoise = _data["backgroundNoise"];
+            this.note = _data["note"];
         }
     }
 
@@ -1436,6 +1442,7 @@ export class SquadSprintStats implements ISquadSprintStats {
         data["sprintId"] = this.sprintId;
         data["capacity"] = this.capacity;
         data["backgroundNoise"] = this.backgroundNoise;
+        data["note"] = this.note;
         return data;
     }
 }
@@ -1445,6 +1452,7 @@ export interface ISquadSprintStats {
     sprintId?: number;
     capacity?: number;
     backgroundNoise?: number;
+    note?: string | undefined;
 }
 
 export class Risk implements IRisk {

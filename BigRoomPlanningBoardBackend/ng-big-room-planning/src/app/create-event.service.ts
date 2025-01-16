@@ -70,6 +70,7 @@ export class CreatEventService {
     event.sprintId = squadSprintStats.sprintId;
     event.capacity = squadSprintStats.capacity;
     event.backgroundNoise = squadSprintStats.backgroundNoise;
+    event.note = squadSprintStats.note;
 
     this.dataService.sendEvent(event);
   }

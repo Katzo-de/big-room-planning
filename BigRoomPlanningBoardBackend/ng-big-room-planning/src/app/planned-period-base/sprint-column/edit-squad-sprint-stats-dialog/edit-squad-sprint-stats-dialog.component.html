@@ -9,6 +9,10 @@
         <mat-slider [step]="0.5" [min]="0" [max]="100" discrete [displayWith]="formatLabel">
             <input matSliderThumb [formControlName]="'backgroundNoise'">
         </mat-slider>
+        <mat-form-field>
+            <mat-label>Note</mat-label>
+            <textarea matInput formControlName="note"></textarea>
+        </mat-form-field>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>

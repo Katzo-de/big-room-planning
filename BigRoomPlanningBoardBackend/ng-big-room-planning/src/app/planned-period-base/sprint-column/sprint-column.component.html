@@ -25,9 +25,13 @@
                 <div class="stat-name" i18n>Capacity:</div>
                 <div class="stat-value">{{ capacity$ | async }}%</div>
             </div>
-            <div class="stat">
+            <div class="stat" >
                 <div class="stat-name" i18n>Background Noise:</div>
                 <div class="stat-value">{{ backgroundNoise$ | async }}%</div>
+            </div>
+            <div class="stat" [matTooltip]="note$ | async" [matTooltipPosition]="'right'">
+                <span>Note:</span>
+                <span class="stat-note">{{ note$ | async}}</span>
             </div>
             <button mat-button (click)="editStats()" i18n>
                 Edit
