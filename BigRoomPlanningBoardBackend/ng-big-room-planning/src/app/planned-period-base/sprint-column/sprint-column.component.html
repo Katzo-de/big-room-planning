@@ -1,6 +1,11 @@
 <div class="ticket-column"  [class.scroll]="mode === 'squad'">
     <div class="sprint-header">
-        {{ (sprint$ | async).name }}
+        <span class="sprint-title">{{ (sprint$ | async).name }}</span>
+        @if ((sprint$ | async).startsAt.getFullYear === (sprint$ | async).startsAt.getFullYear) {
+            <span class="sprint-date">{{ (sprint$ | async).startsAt | date:'dd. MMM' }} - {{ (sprint$ | async).endsAt | date:'dd. MMM' }}</span>
+        } @else {
+            <span class="sprint-date">{{ (sprint$ | async).startsAt | date:'dd. MMM yy' }} - {{ (sprint$ | async).endsAt | date:'dd. MMM yy' }}</span>
+        }
     </div>
     <div class="risks">
         <div class="risk-heading" [ngClass]="riskStatus$ | async" i18n>

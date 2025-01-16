@@ -4,6 +4,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import {
   AsyncPipe,
+  DatePipe,
   NgClass,
   NgFor,
 } from '@angular/common';
@@ -69,7 +70,8 @@ import { SquadNamePipe } from '../../squad-name.pipe';
     NgClass,
     DragDropModule,
     TicketCardComponent,
-    SquadNamePipe
+    SquadNamePipe,
+    DatePipe
   ],
   templateUrl: './sprint-column.component.html',
   styleUrl: './sprint-column.component.scss'

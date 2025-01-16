@@ -1,109 +1,112 @@
-
 .sprint-header {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+
+  .sprint-title {
     font-size: 1.5rem;
-    height: 30px;
+    margin-bottom: 0.25rem;
+  }
+  .sprint-date {
+    font-size: 0.75rem;
     margin-bottom: 1rem;
+  }
 }
 
 $notAcceptedColor: var(--sys-error);
-$acceptedColor:  var(--sys-on-surface);
+$acceptedColor: var(--sys-on-surface);
 
 .risks {
-    height: 200px;
+  height: 200px;
+  margin-bottom: 1rem;
+
+  .risk-heading {
+    height: 1rem;
     margin-bottom: 1rem;
 
-
-    .risk-heading {
-        height: 1rem;
-        margin-bottom: 1rem;
-
-        &.open {
-            color: $notAcceptedColor;
-        }
-
-        &.closed {
-            color: $acceptedColor;
-        }
+    &.open {
+      color: $notAcceptedColor;
     }
 
-    .risk-body {
-        height: calc(200px - calc(48px + 2.5rem));
+    &.closed {
+      color: $acceptedColor;
+    }
+  }
+
+  .risk-body {
+    height: calc(200px - calc(48px + 2.5rem));
+    overflow: hidden;
+
+    .risk-texts {
+      display: flex;
+      flex-direction: row;
+      gap: 0.25rem;
+
+      .risk-text {
+        margin-top: 0.2rem;
+        height: 0.8rem;
+        font-size: 0.8rem;
+        color: $notAcceptedColor;
+
+        text-wrap: nowrap;
         overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
 
-        .risk-texts {
-            display: flex;
-            flex-direction: row;
-            gap: 0.25rem;
-
-            .risk-text {
-                margin-top: .2rem;
-                height: 0.8rem;
-                font-size: 0.8rem;
-                color: $notAcceptedColor;
-    
-                text-wrap: nowrap;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-    
-                &.accepted {
-                    color: $acceptedColor;
-                }
-            }
+        &.accepted {
+          color: $acceptedColor;
         }
-
+      }
     }
+  }
 
-    .risk-button {
-        margin-top: .5rem;
-        height: 48px;
-    }
+  .risk-button {
+    margin-top: 0.5rem;
+    height: 48px;
+  }
 }
 
 .tickets {
+  height: 100%;
 
-    height: 100%;
+  &.scroll {
+    // 2rem margin from .ticket-column
+    // 3 rem from this file (1rem each .sprint-header, .risks, .stats)
+    // total 5rem
 
-    &.scroll {
-        // 2rem margin from .ticket-column
-        // 3 rem from this file (1rem each .sprint-header, .risks, .stats)
-        // total 5rem
+    // 130px + 200px + 30px = 360px
+    height: calc(100% - calc(360px + 5rem));
+    overflow: auto;
+  }
 
-        // 130px + 200px + 30px = 360px
-        height: calc(100% - calc(360px + 5rem));
-        overflow: auto;
-    }
-
-    
-
-    app-ticket-card {
-        margin-top: 1rem;
-        display: block;
-    }
+  app-ticket-card {
+    margin-top: 1rem;
+    display: block;
+  }
 }
 
 .stats {
+  margin-top: 1rem;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+
+  button {
     margin-top: 1rem;
-    height: 130px;
+  }
+
+  .stat {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    margin-top: 0.5rem;
 
-    button {
-        margin-top: 1rem;
+    font-size: 1.2rem;
+    .stat-name {
+      width: 300px;
     }
-
-    .stat {
-        display: flex;
-        flex-direction: row;
-        margin-top: .5rem;
-
-        font-size: 1.2rem;
-        .stat-name {
-            width: 300px;
-        }
-        .stat-value {
-            text-align: end;
-            font-weight: bold;
-        }
+    .stat-value {
+      text-align: end;
+      font-weight: bold;
     }
+  }
 }
