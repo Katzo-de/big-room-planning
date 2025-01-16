@@ -5,8 +5,8 @@
     margin-bottom: 1rem;
 }
 
-$notAcceptedColor:  rgb(255, 180, 171);
-$acceptedColor:  rgb(174, 241, 97);
+$notAcceptedColor: var(--sys-error);
+$acceptedColor:  var(--sys-on-surface);
 
 .risks {
     height: 200px;

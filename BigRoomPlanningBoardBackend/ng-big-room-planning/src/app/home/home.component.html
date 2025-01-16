@@ -1,7 +1,14 @@
 <div class="home-container">
     <div class="home-content">
-        <div class="greeting" i18n>
-            Hello {{ (session$ | async)?.username }}!
+        <div class="home-header">
+            <span class="greeting" i18n>Hello {{ (session$ | async)?.username }}!</span>
+            <button mat-button [matMenuTriggerFor]="themeMenu"><mat-icon fontIcon="contrast"></mat-icon>Theme</button>
+            <mat-menu #themeMenu="matMenu">
+                <button mat-menu-item (click)="changeTheme('light')" ><mat-icon fontIcon="light_mode"></mat-icon>Light</button>
+                <button mat-menu-item (click)="changeTheme('dark')"><mat-icon fontIcon="dark_mode"></mat-icon>Dark</button>
+                <button mat-menu-item (click)="changeTheme('system')"><mat-icon fontIcon="devices"></mat-icon>System</button>
+            </mat-menu>
+            
         </div>
 
         @if(hasNoPeriods$ | async) {

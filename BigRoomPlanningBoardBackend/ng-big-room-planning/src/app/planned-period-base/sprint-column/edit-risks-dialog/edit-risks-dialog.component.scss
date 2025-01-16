@@ -24,7 +24,7 @@
 
             .hover {
                 display: none;
-                color: rgb(255, 180, 171);
+                color: var(--sys-on-error-container);
             }
 
             &:hover {
