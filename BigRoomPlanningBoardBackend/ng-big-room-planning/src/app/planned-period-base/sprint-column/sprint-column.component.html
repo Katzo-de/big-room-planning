@@ -1,10 +1,11 @@
 <div class="ticket-column"  [class.scroll]="mode === 'squad'">
     <div class="sprint-header">
-        <span class="sprint-title">{{ (sprint$ | async).name }}</span>
-        @if ((sprint$ | async).startsAt.getFullYear === (sprint$ | async).startsAt.getFullYear) {
-            <span class="sprint-date">{{ (sprint$ | async).startsAt | date:'dd. MMM' }} - {{ (sprint$ | async).endsAt | date:'dd. MMM' }}</span>
+        @let sprint = sprint$ | async;
+        <span class="sprint-title">{{ sprint.name }}</span>
+        @if (sprint.startsAt.getFullYear() === sprint.endsAt.getFullYear()) {
+            <span class="sprint-date">{{ sprint.startsAt | date:'dd. MMM' }} - {{ sprint.endsAt | date:'dd. MMM' }}</span>
         } @else {
-            <span class="sprint-date">{{ (sprint$ | async).startsAt | date:'dd. MMM yy' }} - {{ (sprint$ | async).endsAt | date:'dd. MMM yy' }}</span>
+            <span class="sprint-date">{{ sprint.startsAt | date:'dd. MMM yy' }} - {{ sprint.endsAt | date:'dd. MMM yy' }}</span>
         }
     </div>
     <div class="risks">
