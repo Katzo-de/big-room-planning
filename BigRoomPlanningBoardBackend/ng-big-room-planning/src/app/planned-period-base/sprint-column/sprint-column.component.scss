@@ -111,7 +111,8 @@ $acceptedColor:  var(--sys-on-surface);
     }
 
     .stat-note {
-      align-self: center;
+      align-self: flex-end;
+      white-space: nowrap;
       font-size: 1rem;
       margin-left: 0.5rem;
       text-overflow: ellipsis;
