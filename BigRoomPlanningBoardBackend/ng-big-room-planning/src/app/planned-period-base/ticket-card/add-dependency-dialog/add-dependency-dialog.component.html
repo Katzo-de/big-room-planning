@@ -1,8 +1,8 @@
-<h2 mat-dialog-title i18n>Edit Depenendies of {{data.title}}</h2>
+<h2 mat-dialog-title i18n>Edit Dependencies of {{data.title}}</h2>
 <mat-dialog-content class="content">
     <div class="div-content">
         <div class="filter" [formGroup]="formGroup">
-            <div class="filter-item">
+            <div class="filter-item" style="flex-grow: 1;">
                 <mat-form-field>
                     <mat-label i18n>Title</mat-label>
                     <input matInput [formControlName]="'title'">

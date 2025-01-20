@@ -249,7 +249,7 @@ export class TicketCardComponent implements OnChanges {
     this.matDialog.open(AddDependencyDialogComponent, {
       height: '90vh',
       maxHeight: '90vh',
-      width: '60vw',
+      width: '40rem',
       maxWidth: '60vw',
       data: this.ticket,
       disableClose: true
