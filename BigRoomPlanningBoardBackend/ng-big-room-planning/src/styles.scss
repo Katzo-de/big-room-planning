@@ -16,6 +16,15 @@
     @include mat.all-component-densities(m3-theme.$light-theme);
     @include mat.system-level-colors(m3-theme.$light-theme);
     @include mat.system-level-typography(m3-theme.$light-theme);
+
+    --md-extended-color-accept-color: rgb(64 104 54);
+    --md-extended-color-accept-on-color: rgb(255 255 255);
+    --md-extended-color-accept-color-container: rgb(192 239 176);
+    --md-extended-color-accept-on-color-container: rgb(0 34 0);
+    --md-extended-color-warn-color: rgb(129 85 18);
+    --md-extended-color-warn-on-color: rgb(255 255 255);
+    --md-extended-color-warn-color-container: rgb(255 221 183);
+    --md-extended-color-warn-on-color-container: rgb(42 23 0);
 }
 
 [data-theme='dark'] {
@@ -27,6 +36,15 @@
     @include mat.all-component-densities(m3-theme.$dark-theme);
     @include mat.system-level-colors(m3-theme.$dark-theme);
     @include mat.system-level-typography(m3-theme.$dark-theme);
+
+    --md-extended-color-accept-color: rgb(165 211 150);
+    --md-extended-color-accept-on-color: rgb(17 56 11);
+    --md-extended-color-accept-color-container: rgb(40 80 32);
+    --md-extended-color-accept-on-color-container: rgb(192 239 176);
+    --md-extended-color-warn-color: rgb(247 187 112);
+    --md-extended-color-warn-on-color: rgb(70 42 0);
+    --md-extended-color-warn-color-container: rgb(101 62 0);
+    --md-extended-color-warn-on-color-container: rgb(255 221 183);
 }
 
 .scrollbar-hide::-webkit-scrollbar-track {
