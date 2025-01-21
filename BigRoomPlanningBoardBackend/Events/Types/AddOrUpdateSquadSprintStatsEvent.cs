@@ -6,6 +6,7 @@
         public int SprintId { get; set; }
         public double Capacity { get; set; }
         public double BackgroundNoise { get; set; }
+        public string Note { get; set; }
 
         public override bool Process(BigRoomPlanningContext bigRoomPlanningContext)
         {
@@ -31,7 +32,8 @@
                     SquadId = SquadId,
                     SprintId = SprintId,
                     BackgroundNoise = BackgroundNoise,
-                    Capacity = Capacity
+                    Capacity = Capacity,
+                    Note = Note
                 };
 
                 bigRoomPlanningContext.Add(existing);
@@ -40,6 +42,7 @@
             {
                 existing.BackgroundNoise = BackgroundNoise;
                 existing.Capacity = Capacity;
+                existing.Note = Note;
             }
 
             return true;

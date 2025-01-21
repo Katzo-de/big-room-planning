@@ -21,6 +21,10 @@ import {
 
 import { ISquadSprintStats } from '../../../client';
 import { CreatEventService } from '../../../create-event.service';
+import {
+  MatFormFieldModule
+} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-edit-squad-sprint-stats-dialog',
@@ -30,7 +34,9 @@ import { CreatEventService } from '../../../create-event.service';
     MatSlider,
     MatSliderThumb,
     ReactiveFormsModule,
-    MatButton
+    MatButton,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './edit-squad-sprint-stats-dialog.component.html',
   styleUrl: './edit-squad-sprint-stats-dialog.component.scss'
@@ -40,6 +46,7 @@ export class EditSquadSprintStatsDialogComponent implements OnInit {
   formGroup = new FormGroup({
     capacity: new FormControl<number>(0),
     backgroundNoise: new FormControl<number>(0),
+    note: new FormControl<string>(''),
   })
 
   constructor(
@@ -53,7 +60,8 @@ export class EditSquadSprintStatsDialogComponent implements OnInit {
   ngOnInit(): void {
     this.formGroup.setValue({
       backgroundNoise: this.data.backgroundNoise,
-      capacity: this.data.capacity
+      capacity: this.data.capacity,
+      note: this.data.note
     });
   }
 
@@ -61,7 +69,8 @@ export class EditSquadSprintStatsDialogComponent implements OnInit {
     this.createEventService.addOrUpdateSquadSprintStats({
       ...this.data,
       capacity: this.formGroup.controls.capacity.value,
-      backgroundNoise: this.formGroup.controls.backgroundNoise.value
+      backgroundNoise: this.formGroup.controls.backgroundNoise.value,
+      note: this.formGroup.controls.note.value
     });
 
     this.matDialogRef.close();

@@ -92,21 +92,30 @@ $acceptedColor: var(--md-extended-color-accept-color);
   flex-direction: column;
 
   button {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 
   .stat {
     display: flex;
     flex-direction: row;
     margin-top: 0.5rem;
-
     font-size: 1.2rem;
+
     .stat-name {
       width: 300px;
     }
     .stat-value {
       text-align: end;
       font-weight: bold;
+    }
+
+    .stat-note {
+      align-self: flex-end;
+      white-space: nowrap;
+      font-size: 1rem;
+      margin-left: 0.5rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 }
