@@ -41,7 +41,7 @@ import {
   Sprint,
   Ticket,
 } from '../../client';
-import { CreatEventService } from '../../create-event.service';
+import { CreateEventService } from '../../create-event.service';
 import { DragDropService } from '../../drag-drop.service';
 import {
   getDependencies,
@@ -111,7 +111,7 @@ export class SprintColumnComponent implements OnInit, OnChanges, OnDestroy {
     private store$: Store<any>,
     private matDialog: MatDialog,
     private dragDropService: DragDropService,
-    private createEventService: CreatEventService,
+    private createEventService: CreateEventService,
     private ngZone: NgZone
   ) {
 

@@ -32,7 +32,7 @@ import {
   IPlannedPeriod,
   PlannedPeriod,
 } from '../client';
-import { CreatEventService } from '../create-event.service';
+import { CreateEventService } from '../create-event.service';
 import {
   EditEntityComponent,
   EditEntityPageComponent,
@@ -89,7 +89,7 @@ export class EditPlannedPeriodComponent extends EditEntityComponent implements O
     private activatedRoute: ActivatedRoute,
     private store$: Store<any>,
     private handleErrorService: HandleErrorService,
-    private createEventServie: CreatEventService,
+    private createEventServie: CreateEventService,
     private router: Router
   ) {
     super();

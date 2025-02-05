@@ -2,13 +2,16 @@
     <div class="home-content">
         <div class="home-header">
             <span class="greeting" i18n>Hello {{ (session$ | async)?.username }}!</span>
-            <button mat-button [matMenuTriggerFor]="themeMenu"><mat-icon fontIcon="contrast"></mat-icon>Theme</button>
+            <button mat-stroked-button style="margin-left: auto;" [matMenuTriggerFor]="themeMenu"><mat-icon fontIcon="contrast"></mat-icon>Theme</button>
             <mat-menu #themeMenu="matMenu">
                 <button mat-menu-item (click)="changeTheme('light')" ><mat-icon fontIcon="light_mode"></mat-icon>Light</button>
                 <button mat-menu-item (click)="changeTheme('dark')"><mat-icon fontIcon="dark_mode"></mat-icon>Dark</button>
                 <button mat-menu-item (click)="changeTheme('system')"><mat-icon fontIcon="devices"></mat-icon>System</button>
             </mat-menu>
-            
+            <button mat-flat-button  (click)="onLogout()">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+            </button>
         </div>
 
         @if(hasNoPeriods$ | async) {

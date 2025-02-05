@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import {
   AddDependencyEvent,
@@ -11,6 +11,7 @@ import {
   AddTicketEvent,
   DeleteDependencyEvent,
   DeleteRiskEvent,
+  DeleteSessionEvent,
   DeleteTicketEvent,
   EditPlannedPeriodEvent,
   EditRiskEvent,
@@ -22,28 +23,30 @@ import {
   IEvent,
   IPlannedPeriod,
   IRisk,
+  ISession,
   ISprint,
   ISquad,
   ISquadSprintStats,
   ITicket,
 } from './client';
 import { DataService } from './data.service';
+import { ConnectionService } from './connection/connection.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CreatEventService {
+export class CreateEventService {
 
-  constructor(
-    private dataService: DataService
-  ) { }
+  private dataService = inject(DataService)
+
+  private connectionService = inject(ConnectionService)
 
   startSession(name: string) {
     const event = new AddSessionEvent({
       createdAt: new Date(Date.now()),
       sessionId: crypto.randomUUID()
     })
-
+    
     event.sessionName = name;
 
     this.dataService.sendEvent(event);
@@ -110,6 +113,13 @@ export class CreatEventService {
   deleteRisk (risk: IRisk) {
     const event = this.getBaseEvent(DeleteRiskEvent);
     event.riskId = risk.riskId;
+
+    this.dataService.sendEvent(event);
+  }
+
+  deleteSession(session: ISession) {
+    const event = this.getBaseEvent(DeleteSessionEvent);
+    event.deleteSessionId = session.sessionId;
 
     this.dataService.sendEvent(event);
   }
@@ -198,7 +208,7 @@ export class CreatEventService {
   private getBaseEvent<T extends Event, U extends IEvent>(ctor: new(data: U) => T): T {
     const u: U = {
       createdAt: new Date(Date.now()),
-      sessionId: this.dataService.sessionId
+      sessionId: this.connectionService.session.sessionId
     } as U; 
 
     return new ctor(u);

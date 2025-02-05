@@ -35,7 +35,7 @@ import {
   IDependency,
   Ticket,
 } from '../../client';
-import { CreatEventService } from '../../create-event.service';
+import { CreateEventService } from '../../create-event.service';
 import {
   HighlightDependenciesService,
 } from '../../highlight-dependencies.service';
@@ -97,7 +97,7 @@ export class TicketCardComponent implements OnChanges {
 
   constructor(
     private matDialog: MatDialog,
-    private createEventServie: CreatEventService,
+    private createEventServie: CreateEventService,
     private store$: Store<any>,
     private highlightDependenciesService: HighlightDependenciesService
   ) {

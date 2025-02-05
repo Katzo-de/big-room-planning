@@ -45,7 +45,7 @@ import {
   Risk,
   Sprint,
 } from '../../../client';
-import { CreatEventService } from '../../../create-event.service';
+import { CreateEventService } from '../../../create-event.service';
 import {
   getRisks,
   getSprints,
@@ -94,7 +94,7 @@ export class EditRisksDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: EditRisksDialogData,
     private store$: Store<any>,
     private matDialogRef: MatDialogRef<EditRisksDialogComponent>,
-    private createEventService: CreatEventService
+    private createEventService: CreateEventService
   ) {
 
   }

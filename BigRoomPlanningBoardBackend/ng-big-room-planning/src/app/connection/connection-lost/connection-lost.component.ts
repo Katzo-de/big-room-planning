@@ -1,10 +1,11 @@
 import {
   Component,
-  Input,
+  inject,
+  input,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import { DataService } from '../data.service';
+import { ConnectionService } from '../connection.service';
 
 @Component({
   selector: 'app-connection-lost',
@@ -18,15 +19,20 @@ import { DataService } from '../data.service';
 })
 export class ConnectionLostComponent {
 
-  @Input()
-  error: string | undefined;
+  /**
+   * Error Message
+   */
+  error = input<string | undefined>()
 
-  constructor (
-    private dataService: DataService
-  ) {
-  }
+  /**
+   * Inject ConnectionService
+   */
+  connectionService= inject(ConnectionService)
 
+  /**
+   * Reconnect Methode
+   */
   reconnect() {
-    this.dataService.openConnection();
+    this.connectionService.startConnection();
   }
 }
