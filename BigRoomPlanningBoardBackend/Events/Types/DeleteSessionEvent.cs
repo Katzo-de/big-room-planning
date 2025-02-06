@@ -9,12 +9,10 @@
             var session = bigRoomPlanningContext.Sessions.Find(SessionId);
             if (session != null)
             {
-                return false;
+                bigRoomPlanningContext.Remove(session);
+                return true;
             }
-
-            bigRoomPlanningContext.Remove(session);
-
-            return true;
+            return false;
         }
     }
 }
