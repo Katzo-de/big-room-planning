@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ConnectionLostComponent } from './connection-lost/connection-lost.component';
 import { CreateConnectionComponent } from './create-connection/create-connection.component';
@@ -13,7 +13,7 @@ import {
   getCurrentSession,
   getIsConnected,
 } from '../store/app.selectors';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -30,11 +30,20 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './connection.component.scss',
 })
 export class ConnectionComponent {
-  private store$ = inject(Store);
 
+  currentSession$: Observable<any>;
+  isConnected$: Observable<any>;
+  connectionError$: Observable<any>;
+  
   progressBarMode: ProgressBarMode = 'indeterminate';
 
-  currentSession$ = this.store$.pipe(select(getCurrentSession));
-  isConnected$ = this.store$.pipe(select(getIsConnected));
-  connectionError$ = this.store$.pipe(select(getConnectionError));
+  constructor(
+    private store$: Store<any>
+  ) {
+    this.currentSession$ = this.store$.pipe(select(getCurrentSession));
+    this.isConnected$ = this.store$.pipe(select(getIsConnected));
+    this.connectionError$ = this.store$.pipe(select(getConnectionError));
+  }
+  
+
 }

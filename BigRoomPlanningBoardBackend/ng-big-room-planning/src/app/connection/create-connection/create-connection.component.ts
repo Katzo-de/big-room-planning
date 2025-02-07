@@ -27,13 +27,16 @@ import { CreateEventService } from '../../create-event.service';
   styleUrl: './create-connection.component.scss',
 })
 export class CreateConnectionComponent {
-  private createEventService = inject(CreateEventService);
-
+  
   submitted = false;
 
   formGroup = new FormGroup({
     name: new FormControl<string>(null, Validators.required),
   });
+
+  constructor(
+    private createEventService: CreateEventService
+  ) {}
 
   createSession(): void {
     this.formGroup.markAllAsTouched();

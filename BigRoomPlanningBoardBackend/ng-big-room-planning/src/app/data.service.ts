@@ -1,5 +1,4 @@
 import {
-  inject,
   Injectable,
   OnDestroy
 } from '@angular/core';
@@ -50,12 +49,6 @@ export class DataService implements OnDestroy {
 
   private isProcessingQueue = false;
 
-  private processEventService = inject(ProcessEventService);
-
-  private store$ = inject(Store);
-
-  private connectionService = inject(ConnectionService);
-
   private subscription = new Subscription();
 
   pingUpdate$ = interval(pingInterval)
@@ -72,7 +65,11 @@ export class DataService implements OnDestroy {
       }
     });
 
-  constructor() {
+  constructor(
+    private store$: Store<any>,
+    private connectionService: ConnectionService,
+    private processEventService: ProcessEventService
+  ) {
     this.queue.length()
     
     this.connectionService.onRecieveFullData((events: IBRPFullData) => {

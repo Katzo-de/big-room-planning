@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import {
   AddDependencyEvent,
@@ -37,9 +37,10 @@ import { ConnectionService } from './connection/connection.service';
 })
 export class CreateEventService {
 
-  private dataService = inject(DataService)
-
-  private connectionService = inject(ConnectionService)
+  constructor(
+    private dataService: DataService,
+    private connectionService: ConnectionService
+  ) {}
 
   startSession(name: string) {
     const event = new AddSessionEvent({

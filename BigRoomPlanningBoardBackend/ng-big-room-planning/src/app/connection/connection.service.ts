@@ -19,7 +19,6 @@ const enableLogging: boolean = true;
 })
 export class ConnectionService implements OnDestroy {
   private _connection: HubConnection;
-  private snackBar = inject(MatSnackBar);
   private readonly connectionUrl: string = '/hubs/data';
   private readonly localStorageItemKey: string = 'session';
 
@@ -35,13 +34,14 @@ export class ConnectionService implements OnDestroy {
 
   private subscription = new Subscription();
 
-  private store$ = inject(Store);
-
   private _onRecieveEvents = (events) => {};
 
   private _onRecieveFullData = (data) => {};
 
-  constructor() {
+  constructor(
+    private store$: Store<any>,
+    private snackBar: MatSnackBar,
+  ) {
     this._connection = new HubConnectionBuilder()
       .withUrl(this.connectionUrl)
       .withAutomaticReconnect()

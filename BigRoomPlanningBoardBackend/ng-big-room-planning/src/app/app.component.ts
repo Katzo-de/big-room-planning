@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ConnectionComponent } from './connection/connection.component';
 import { ConnectionService } from './connection/connection.service';
@@ -10,10 +10,10 @@ import { ConnectionService } from './connection/connection.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  public connectionService = inject(ConnectionService);
 
-
-  constructor() {
+  constructor(
+    public connectionService: ConnectionService
+  ) {
     this.connectionService.startConnection();
   }
 }

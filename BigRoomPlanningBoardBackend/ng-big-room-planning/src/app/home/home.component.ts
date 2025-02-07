@@ -1,5 +1,5 @@
 import { AsyncPipe, NgFor } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import {
   MatCard,
@@ -54,10 +54,11 @@ export class HomeComponent implements OnInit {
 
   periods$: Observable<PlannedPeriod[]>;
 
-  connectionService = inject(ConnectionService);
-  private createEventService = inject(CreateEventService);
-
-  constructor(private store$: Store<any>) {}
+  constructor(
+    private store$: Store<any>,
+    public connectionService: ConnectionService,
+    private createEventService: CreateEventService
+  ) {}
 
   ngOnInit(): void {
     this.session$ = this.store$.pipe(select(getCurrentSession));

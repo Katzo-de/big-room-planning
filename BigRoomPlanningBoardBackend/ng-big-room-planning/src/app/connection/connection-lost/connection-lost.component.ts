@@ -1,6 +1,5 @@
 import {
   Component,
-  inject,
   input,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
@@ -24,10 +23,9 @@ export class ConnectionLostComponent {
    */
   error = input<string | undefined>()
 
-  /**
-   * Inject ConnectionService
-   */
-  connectionService= inject(ConnectionService)
+  constructor(
+    private connectionService: ConnectionService
+  ) { }
 
   /**
    * Reconnect Methode
