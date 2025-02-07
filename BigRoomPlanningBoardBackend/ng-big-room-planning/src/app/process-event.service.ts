@@ -11,6 +11,7 @@ import {
 
 import {
   AddDependencyEvent,
+  AddDependencyTicketEvent,
   AddOrUpdateSquadSprintStatsEvent,
   AddPlannedPeriodEvent,
   AddRiskEvent,
@@ -202,6 +203,15 @@ export class ProcessEventService {
       return;
     }
 
+    if (event instanceof AddDependencyTicketEvent) {
+      const ticket = Ticket.fromJS(event);
+      const dependency = Dependency.fromJS(event);
+      
+      this.store$.dispatch(eventAddTicket({ ticket }))
+      this.store$.dispatch(eventAddDependency({ dependency }))
+      return; 
+    }
+
     if (event instanceof DeleteDependencyEvent) {
       this.store$.dispatch(eventDeleteDependency({ dependencyId: event.dependencyId }))
       return;
@@ -277,6 +287,7 @@ export class ProcessEventService {
       || event instanceof AddSessionEvent
       || event instanceof AddSprintEvent
       || event instanceof AddSquadEvent
+      || event instanceof AddDependencyTicketEvent
       || event instanceof AddTicketEvent
   }
 

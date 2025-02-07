@@ -18,6 +18,7 @@ import {
 } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
@@ -66,6 +67,7 @@ import {
 import {
   MatDividerModule
 } from '@angular/material/divider';
+import { CreateDependencyTicketComponent } from '../create-dependency-ticket/create-dependency-ticket.component';
 
 interface TicketWithDetails extends ITicket {
   dependencyType: 'dependency' | 'dependant' | 'none';
@@ -118,7 +120,8 @@ export class AddDependencyDialogComponent implements OnInit {
     private store$: Store<any>,
     private matDialogRef: MatDialogRef<AddDependencyDialogComponent>,
     private ngZone: NgZone,
-    private createEventService: CreatEventService
+    private createEventService: CreatEventService,
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -298,6 +301,16 @@ export class AddDependencyDialogComponent implements OnInit {
     this.createEventService.deleteDependency({
       dependencyId
     });
+  }
+
+  createDependencyTicket() {
+    this.matDialogRef.close();
+    this.matDialog.open(CreateDependencyTicketComponent, {
+      width: '40rem',
+      maxWidth: '60vw',
+      data: this.data,
+      disableClose: true
+    })
   }
 
   private checkFilter(ticket: Ticket, filter: Partial<{ squad: number, sprints: number[], title: string }>): boolean {

@@ -51,6 +51,7 @@ import {
 import {
   AddDependencyDialogComponent,
 } from './add-dependency-dialog/add-dependency-dialog.component';
+import { CreateDependencyTicketComponent } from './create-dependency-ticket/create-dependency-ticket.component';
 
 interface DependencyWithInfo extends IDependency {
   fullfilled: boolean;
@@ -74,7 +75,6 @@ interface DependencyWithInfo extends IDependency {
   styleUrl: './ticket-card.component.scss'
 })
 export class TicketCardComponent implements OnChanges {
-
   @Input()
   ticket: Ticket;
 
@@ -254,6 +254,15 @@ export class TicketCardComponent implements OnChanges {
       data: this.ticket,
       disableClose: true
     });
+  }
+
+  createDependencyTicket() {
+    this.matDialog.open(CreateDependencyTicketComponent, {
+      width: '40rem',
+      maxWidth: '60vw',
+      data: this.ticket,
+      disableClose: true
+    })
   }
 
   delete() {
