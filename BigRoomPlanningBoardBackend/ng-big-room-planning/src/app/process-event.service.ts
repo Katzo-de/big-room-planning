@@ -22,6 +22,7 @@ import {
   DeleteRiskEvent,
   DeleteTicketEvent,
   Dependency,
+  EditDependencyEvent,
   EditPlannedPeriodEvent,
   EditRiskEvent,
   EditSprintEvent,
@@ -50,6 +51,7 @@ import {
   eventDeleteDependency,
   eventDeleteRisk,
   eventDeleteTicket,
+  eventEditDependency,
   eventEditPlannedPeriod,
   eventEditRisk,
   eventEditSprint,
@@ -214,6 +216,11 @@ export class ProcessEventService {
 
     if (event instanceof DeleteTicketEvent) {
       this.store$.dispatch(eventDeleteTicket({ ticketId: event.ticketId }))
+      return;
+    }
+
+    if (event instanceof EditDependencyEvent) {
+      this.store$.dispatch(eventEditDependency({ dependency: Dependency.fromJS(event) }))
       return;
     }
 

@@ -8,6 +8,11 @@ namespace BigRoomPlanningBoardBackend.Events.Types
         /// Will be filled after the event is processed
         /// </summary>
         public int? DependencyId { get; set; }
+        
+        /// <summary>
+        /// Interation
+        /// </summary>
+        public DependencyIterationType IterationType { get; set; }
 
         /// <summary>
         /// Ticket that depends on the other ticket. This Ticket must be planned after the other Ticket
@@ -34,7 +39,8 @@ namespace BigRoomPlanningBoardBackend.Events.Types
             var dependency = new Dependency
             {
                 DependencyTicketId = DependencyTicketId,
-                DependantTicketId = DependantTicketId
+                DependantTicketId = DependantTicketId,
+                IterationType = IterationType,
             };
 
             bigRoomPlanningContext.Dependencies.Add(dependency);

@@ -43,6 +43,7 @@ import {
 } from '@ngrx/store';
 
 import {
+  DependencyIterationType,
   ITicket,
   Sprint,
   Squad,
@@ -66,9 +67,13 @@ import {
 import {
   MatDividerModule
 } from '@angular/material/divider';
+import {
+  MatButtonToggleModule
+} from '@angular/material/button-toggle';
 
 interface TicketWithDetails extends ITicket {
   dependencyType: 'dependency' | 'dependant' | 'none';
+  iterationType?: DependencyIterationType;
   /**
    * Determines if that dependency is fullfilled or critical
    */
@@ -93,13 +98,16 @@ interface TicketWithDetails extends ITicket {
     IterationNamePipe,
     SquadNamePipe,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    MatButtonToggleModule
   ],
   templateUrl: './add-dependency-dialog.component.html',
   styleUrl: './add-dependency-dialog.component.scss'
 })
 export class AddDependencyDialogComponent implements OnInit {
 
+  dependencyIterationType = DependencyIterationType;
+  
   formGroup = new FormGroup({
     squad: new FormControl<number>(null),
     sprints: new FormControl<number[]>(null),
@@ -111,7 +119,6 @@ export class AddDependencyDialogComponent implements OnInit {
   sprintFilter$: Observable<Sprint[]>;
 
   ticketList$: Observable<TicketWithDetails[]>;
-
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Ticket,
@@ -193,8 +200,6 @@ export class AddDependencyDialogComponent implements OnInit {
           )
           .map(ticket => {
 
-            console.log('inner',ticket)
-
             const dependantConnection = dependantConnections.find(x => x.dependencyTicketId === ticket.ticketId);
 
             if (dependantConnection) {
@@ -208,12 +213,24 @@ export class AddDependencyDialogComponent implements OnInit {
               } else {
                 const dependencySprint = sprints.find(s => s.sprintId === ticket.sprintId);
                 const dependantSprint = sprints.find(s => s.sprintId === this.data.sprintId);
-                fullfilled = dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+                switch(dependantConnection.iterationType) {
+                  case DependencyIterationType.CanMatch:
+                    fullfilled = dependencySprint.sprintId === dependantSprint.sprintId || dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+                    break;
+                  case DependencyIterationType.MustMatch:
+                    fullfilled = dependencySprint.sprintId === dependantSprint.sprintId 
+                    break;
+                  case DependencyIterationType.CannotMatch:
+                  default:
+                    fullfilled = dependencySprint.sprintId !== dependantSprint.sprintId && dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+                    break;
+                }
               }
               
               const result: TicketWithDetails = {
                 ...ticket,
                 dependencyType: 'dependant',
+                iterationType: dependantConnection.iterationType,
                 dependencyId: dependantConnection.dependencyId,
                 fullfilled
               };
@@ -234,12 +251,24 @@ export class AddDependencyDialogComponent implements OnInit {
               } else {
                 const dependencySprint = sprints.find(s => s.sprintId === this.data.sprintId);
                 const dependantSprint = sprints.find(s => s.sprintId === ticket.sprintId);
-                fullfilled = dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+                switch(dependencyConenction.iterationType) {
+                  case DependencyIterationType.CanMatch:
+                    fullfilled = dependantSprint.sprintId === dependencySprint.sprintId || dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+                    break;
+                  case DependencyIterationType.MustMatch:
+                    fullfilled = dependantSprint.sprintId === dependencySprint.sprintId;
+                    break;
+                  case DependencyIterationType.CannotMatch:
+                  default:
+                    fullfilled = dependantSprint.sprintId !== dependencySprint.sprintId && dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+                    break;
+                }
               }
 
               const result: TicketWithDetails = {
                 ...ticket,
                 dependencyType: 'dependency',
+                iterationType: dependencyConenction.iterationType,
                 dependencyId: dependencyConenction.dependencyId,
                 fullfilled
               };
@@ -280,16 +309,24 @@ export class AddDependencyDialogComponent implements OnInit {
     return $localize`"${ticket.title}" can only be started, after "${this.data.title}" is complete`
   }
 
-  addAsDependency(ticket: ITicket) {
+  addAsDependency(ticket: ITicket, active: "dependency" | "dependant" | "none") {
+    if(active === 'dependency') {
+      return;
+    }
     this.createEventService.addDependency({
       dependencyTicketId: ticket.ticketId,
+      iterationType: DependencyIterationType.CanMatch,
       dependantTicketId: this.data.ticketId
     });
   }
 
-  addAsDependant(ticket: ITicket) {
+  addAsDependant(ticket: ITicket, active: "dependency" | "dependant" | "none") {
+    if(active === 'dependant') {
+      return;
+    }
     this.createEventService.addDependency({
       dependencyTicketId: this.data.ticketId,
+      iterationType: DependencyIterationType.CanMatch,
       dependantTicketId: ticket.ticketId
     });
   }
@@ -298,6 +335,13 @@ export class AddDependencyDialogComponent implements OnInit {
     this.createEventService.deleteDependency({
       dependencyId
     });
+  }
+
+  setDependencyIteration(dependencyId: number,  dependencyIteration: DependencyIterationType): void {
+    this.createEventService.editDependency({
+      dependencyId,
+      iterationType: dependencyIteration
+    })
   }
 
   private checkFilter(ticket: Ticket, filter: Partial<{ squad: number, sprints: number[], title: string }>): boolean {

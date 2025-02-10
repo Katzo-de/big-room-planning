@@ -64,33 +64,46 @@
                         </div>
                     </div>
                     <div class="dependency">
-                        @if (ticket.dependencyType === 'none') {
-                            <button mat-icon-button [matTooltip]="getDependencyTooltip(ticket)" (click)="addAsDependency(ticket)">
-                                <mat-icon>
-                                    keyboard_tab
-                                </mat-icon>
-                            </button>
-                            <button mat-icon-button [matTooltip]="getDependantTooltip(ticket)" (click)="addAsDependant(ticket)">
-                                <mat-icon>
-                                    start
-                                </mat-icon>
-                            </button>
-                        } @else {
-                            
-                            @if(ticket.dependencyType === 'dependant') {
-                                <mat-icon class="active" [class.fullfilled]="ticket.fullfilled" [matTooltip]="getDependencyTooltip(ticket)">
-                                    keyboard_tab
-                                </mat-icon>
-                            } @else {
-                                <mat-icon class="active" [class.fullfilled]="ticket.fullfilled" [matTooltip]="getDependantTooltip(ticket)">
-                                    start
-                                </mat-icon>
-                            }
-            
-                            <button class="active" [class.fullfilled]="ticket.fullfilled" mat-icon-button (click)="deleteDependency(ticket.dependencyId)">
-                                <mat-icon>close</mat-icon>
-                            </button>
+                        @if (ticket.dependencyType !== 'none') {
+                            <mat-button-toggle-group style="margin-right: 0.5rem;" [value]="ticket.iterationType ?? null" hideSingleSelectionIndicator="true">
+                                <mat-button-toggle [value]="dependencyIterationType.MustMatch" (click)="setDependencyIteration(ticket.dependencyId, dependencyIterationType.MustMatch)">
+                                    <span i18n matTooltip="This option indicates that the dependency must match within the same iteration/sprint.">Must Match</span>
+                                </mat-button-toggle>
+                                <mat-button-toggle [value]="dependencyIterationType.CanMatch" (click)="setDependencyIteration(ticket.dependencyId, dependencyIterationType.CanMatch)">
+                                    <span i18n matTooltip="This option indicates that the dependency can optionally match within the same iteration/sprint.">Can Match</span>
+                                </mat-button-toggle>
+                                <mat-button-toggle [value]="dependencyIterationType.CannotMatch" (click)="setDependencyIteration(ticket.dependencyId, dependencyIterationType.CannotMatch)">
+                                    <span i18n matTooltip="This option indicates that the dependency cannot match within the same iteration/sprint.">Cannot Match</span>
+                                </mat-button-toggle>
+                            </mat-button-toggle-group>
                         }
+                        <mat-button-toggle-group [value]="ticket.dependencyType" hideSingleSelectionIndicator="true">
+                            @if (ticket.dependencyType !== 'dependant') {
+                                <mat-button-toggle 
+                                    [class.active]="ticket.dependencyType === 'dependency'" 
+                                    [class.fullfilled]="ticket.fullfilled" 
+                                    value="dependency" 
+                                    [matTooltip]="getDependencyTooltip(ticket)" 
+                                    (click)="addAsDependency(ticket, ticket.dependencyType)">
+                                    <mat-icon>keyboard_tab</mat-icon>
+                                </mat-button-toggle>
+                            }
+                            @if (ticket.dependencyType !== 'dependency') {
+                                <mat-button-toggle
+                                    [class.active]="ticket.dependencyType === 'dependant'"
+                                    [class.fullfilled]="ticket.fullfilled"
+                                    value="dependant"
+                                    [matTooltip]="getDependantTooltip(ticket)"
+                                    (click)="addAsDependant(ticket, ticket.dependencyType)">
+                                    <mat-icon>start</mat-icon>
+                                </mat-button-toggle>
+                            }
+                            @if (ticket.dependencyType !== 'none') {
+                                <mat-button-toggle value="none" matTooltip="Remove dependency" (click)="deleteDependency(ticket.dependencyId)">
+                                    <mat-icon>close</mat-icon>
+                                </mat-button-toggle>
+                            }
+                        </mat-button-toggle-group>
                     </div>
                 </div>
             }

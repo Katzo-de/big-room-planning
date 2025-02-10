@@ -32,6 +32,7 @@ import {
 } from '@ngrx/store';
 
 import {
+  DependencyIterationType,
   IDependency,
   Ticket,
 } from '../../client';
@@ -143,7 +144,18 @@ export class TicketCardComponent implements OnChanges {
           } else if (!currentSprint) {
             fullfilled = false;
           } else {
-            fullfilled = currentSprint.endsAt.getTime() < targetSprint.startsAt.getTime();
+            switch(dependant.iterationType) {
+              case DependencyIterationType.CanMatch:
+                fullfilled = currentSprint.sprintId === targetSprint.sprintId || currentSprint.endsAt.getTime() < targetSprint.startsAt.getTime();
+                break;
+              case DependencyIterationType.MustMatch:
+                fullfilled = currentSprint.sprintId === targetSprint.sprintId 
+                break;
+              case DependencyIterationType.CannotMatch:
+              default:
+                fullfilled = currentSprint.sprintId !== targetSprint.sprintId && currentSprint.endsAt.getTime() < targetSprint.startsAt.getTime();
+                break;
+            }
           }
 
           return {
@@ -169,13 +181,24 @@ export class TicketCardComponent implements OnChanges {
           const dependencyTicket = tickets.find(x => x.ticketId === dependency.dependencyTicketId)
 
           const previousSprint = dependencyTicket.sprintId ? sprints.find(s => s.sprintId === dependencyTicket.sprintId) : null
-
+          
           if (!currentSprint) {
             fullfilled = true;
           } else if (!previousSprint) {
             fullfilled = false;
           } else {
-            fullfilled = previousSprint.endsAt.getTime() < currentSprint.startsAt.getTime();
+            switch(dependency.iterationType) {
+              case DependencyIterationType.CanMatch:
+                fullfilled = currentSprint.sprintId === previousSprint.sprintId || previousSprint.endsAt.getTime() < currentSprint.startsAt.getTime();
+                break;
+              case DependencyIterationType.MustMatch:
+                fullfilled = currentSprint.sprintId === previousSprint.sprintId;
+                break;
+              case DependencyIterationType.CannotMatch:
+              default:
+                fullfilled = currentSprint.sprintId !== previousSprint.sprintId && previousSprint.endsAt.getTime() < currentSprint.startsAt.getTime();
+                break;
+            }
           }
 
           return {
@@ -249,10 +272,10 @@ export class TicketCardComponent implements OnChanges {
     this.matDialog.open(AddDependencyDialogComponent, {
       height: '90vh',
       maxHeight: '90vh',
-      width: '40rem',
+      width: '60rem',
       maxWidth: '60vw',
       data: this.ticket,
-      disableClose: true
+      disableClose: false
     });
   }
 

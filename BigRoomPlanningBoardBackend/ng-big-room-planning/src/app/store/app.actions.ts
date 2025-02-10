@@ -41,6 +41,8 @@ export const eventDeleteRisk = createAction('eventDeleteRisk', props<{ riskId: n
 
 export const eventDeleteTicket = createAction('eventDeleteTicket', props<{ ticketId: number }>());
 
+export const eventEditDependency = createAction('eventEditDependency', props<{ dependency: Dependency }>());
+
 export const eventEditPlannedPeriod = createAction('eventEditPlannedPeriod', props<{ plannedPeriod: PlannedPeriod }>());
 
 export const eventEditRisk = createAction('eventEditRisk', props<{ risk: Risk }>());

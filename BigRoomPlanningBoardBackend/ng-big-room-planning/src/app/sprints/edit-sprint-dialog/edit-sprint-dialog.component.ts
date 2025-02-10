@@ -129,7 +129,7 @@ export class EditSprintDialogComponent implements OnInit, OnDestroy {
 
     this.isNew = !this.data;
     this.title = this.isNew
-      ? $localize`Create new Interation`
+      ? $localize`Create new Iteration`
       : $localize`Edit Iteration "${this.data.name}"`;
     
     this.closeAction = this.isNew
