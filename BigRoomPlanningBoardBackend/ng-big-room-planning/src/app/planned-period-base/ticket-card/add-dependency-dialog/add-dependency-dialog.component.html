@@ -78,9 +78,9 @@
                             </mat-button-toggle-group>
                         }
                         <mat-button-toggle-group [value]="ticket.dependencyType" hideSingleSelectionIndicator="true">
-                            @if (ticket.dependencyType !== 'dependant') {
+                            @if (ticket.dependencyType === 'dependant' || ticket.dependencyType === 'none') {
                                 <mat-button-toggle 
-                                    [class.active]="ticket.dependencyType === 'dependency'" 
+                                    [class.active]="ticket.dependencyType === 'dependant'" 
                                     [class.fullfilled]="ticket.fullfilled" 
                                     value="dependency" 
                                     [matTooltip]="getDependencyTooltip(ticket)" 
@@ -88,9 +88,9 @@
                                     <mat-icon>keyboard_tab</mat-icon>
                                 </mat-button-toggle>
                             }
-                            @if (ticket.dependencyType !== 'dependency') {
+                            @if (ticket.dependencyType === 'dependency' || ticket.dependencyType === 'none') {
                                 <mat-button-toggle
-                                    [class.active]="ticket.dependencyType === 'dependant'"
+                                    [class.active]="ticket.dependencyType === 'dependency'"
                                     [class.fullfilled]="ticket.fullfilled"
                                     value="dependant"
                                     [matTooltip]="getDependantTooltip(ticket)"

@@ -310,7 +310,7 @@ export class AddDependencyDialogComponent implements OnInit {
   }
 
   addAsDependency(ticket: ITicket, active: "dependency" | "dependant" | "none") {
-    if(active === 'dependency') {
+    if(active === 'dependant') {
       return;
     }
     this.createEventService.addDependency({
@@ -321,7 +321,7 @@ export class AddDependencyDialogComponent implements OnInit {
   }
 
   addAsDependant(ticket: ITicket, active: "dependency" | "dependant" | "none") {
-    if(active === 'dependant') {
+    if(active === 'dependency') {
       return;
     }
     this.createEventService.addDependency({
