@@ -1,6 +1,6 @@
 import {
   Component,
-  input,
+  Input,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -21,7 +21,8 @@ export class ConnectionLostComponent {
   /**
    * Error Message
    */
-  error = input<string | undefined>()
+  @Input() 
+  error: string | undefined;
 
   constructor(
     private connectionService: ConnectionService

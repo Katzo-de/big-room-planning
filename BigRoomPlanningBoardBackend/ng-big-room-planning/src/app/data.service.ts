@@ -1,6 +1,5 @@
 import {
   Injectable,
-  OnDestroy
 } from '@angular/core';
 import {
   interval,
@@ -44,12 +43,10 @@ const enableLogging = true;
 @Injectable({
   providedIn: 'root',
 })
-export class DataService implements OnDestroy {
+export class DataService {
   private queue = new Queue<IEvent>();
 
   private isProcessingQueue = false;
-
-  private subscription = new Subscription();
 
   pingUpdate$ = interval(pingInterval)
     .pipe(switchMap(() => this.store$.pipe(select(getLastEventId))))
@@ -79,12 +76,6 @@ export class DataService implements OnDestroy {
     this.connectionService.onRecieveEvents((data: IEvent[]) =>
       this.recieveEvents(data)
     );
-
-    this.subscription.add(this.pingUpdate$);
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   sendEvent(event: Event) {

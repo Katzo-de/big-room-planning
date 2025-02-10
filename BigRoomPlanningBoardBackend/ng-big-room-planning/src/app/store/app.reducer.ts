@@ -169,8 +169,8 @@ export const appReducer = createReducer(
     on(eventDeleteSession, (state, action) => ({
         ...state,
         knownSessions: Object.keys(state.knownSessions)
-            .filter(x => x !== action.sessionId)
-            .reduce((acc, x) => ({ ...acc, [x]: state.knownSessions[x] }), {}),
+            .filter(key => key !== action.sessionId)
+            .reduce((acc, key) => ({ ...acc, [key]: state.knownSessions[key] }), {}),
         currentSession: state.currentSession?.sessionId === action.sessionId ? undefined : state.currentSession
     })),
     on(eventDeleteTicket, (state, action) => ({

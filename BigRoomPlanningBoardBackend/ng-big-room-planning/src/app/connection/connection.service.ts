@@ -1,4 +1,4 @@
-import { inject, Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   HubConnection,
   HubConnectionBuilder,
@@ -17,7 +17,7 @@ const enableLogging: boolean = true;
 @Injectable({
   providedIn: 'root',
 })
-export class ConnectionService implements OnDestroy {
+export class ConnectionService {
   private _connection: HubConnection;
   private readonly connectionUrl: string = '/hubs/data';
   private readonly localStorageItemKey: string = 'session';
@@ -31,8 +31,6 @@ export class ConnectionService implements OnDestroy {
   }
 
   private activeSession: Session;
-
-  private subscription = new Subscription();
 
   private _onRecieveEvents = (events) => {};
 
@@ -67,20 +65,18 @@ export class ConnectionService implements OnDestroy {
       this._onRecieveFullData(data);
     });
 
-    this.subscription.add(
-      this.store$.pipe(select(getCurrentSession)).subscribe((session) => {
-        this.log('Session changed: ' + JSON.stringify(session));
-        this.activeSession = session;
-        if (session) {
-          const iSession: ISession = session;
-          localStorage.setItem(
-            this.localStorageItemKey,
-            JSON.stringify(iSession)
-          );
-        }
-        this._activeSessionId = session ? session.sessionId : undefined;
-      })
-    );
+    this.store$.pipe(select(getCurrentSession)).subscribe((session) => {
+      this.log('Session changed: ' + JSON.stringify(session));
+      this.activeSession = session;
+      if (session) {
+        const iSession: ISession = session;
+        localStorage.setItem(
+          this.localStorageItemKey,
+          JSON.stringify(iSession)
+        );
+      }
+      this._activeSessionId = session ? session.sessionId : undefined;
+    })
   }
 
   onRecieveEvents(callback: (events: IEvent[]) => void) {
@@ -91,9 +87,6 @@ export class ConnectionService implements OnDestroy {
     this._onRecieveFullData = callback;
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
 
   startConnection(): void {
     this.stopConnection();
