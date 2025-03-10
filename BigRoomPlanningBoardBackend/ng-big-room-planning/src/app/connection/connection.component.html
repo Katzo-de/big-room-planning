@@ -1,0 +1,16 @@
+<div style="height: 100%; width: 100%">
+  @if ((isConnected$ | async) && !(currentSession$ | async) && !(connectionError$ | async)) {
+  <app-create-connection #createConnectionComponent class="content"></app-create-connection>
+  } @else if (!(isConnected$ | async) && (connectionError$ | async)) {
+  <app-connection-lost class="content" [error]="connectionError$ | async"></app-connection-lost>
+  } @else {
+    <div class="content" style="flex-direction: column; gap: 0.5rem;">
+      <span style="font-size: 2rem; justify-self: center;" i18n>Connecting</span>
+      <mat-progress-bar style="width: 35vw;" [mode]="progressBarMode"></mat-progress-bar>
+      <span i18n>establish the connection</span>
+    </div>
+  }
+</div>
+
+<span style="position: absolute; bottom: 0.25rem; left: 0.25rem; font-size: 0.75rem;">powered by <a href="https://github.com/kahmannf/big-room-planning">kahmannf/big-room-planning</a></span>
+

@@ -20,6 +20,7 @@ import {
   AddTicketEvent,
   DeleteDependencyEvent,
   DeleteRiskEvent,
+  DeleteSessionEvent,
   DeleteTicketEvent,
   Dependency,
   EditPlannedPeriodEvent,
@@ -55,9 +56,10 @@ import {
   eventEditSprint,
   eventEditSquad,
   eventEditTicket,
-  initializCurrentSeesion,
+  setCurrentSession,
   setCreateSessionFailed,
   setLastEventId,
+  eventDeleteSession,
 } from './store/app.actions';
 import { getLastEventId } from './store/app.selectors';
 
@@ -128,7 +130,7 @@ export class ProcessEventService {
       this.store$.dispatch(eventAddSession({ session }))
 
       if (session.sessionId === currentSessionId) {
-        this.store$.dispatch(initializCurrentSeesion({ session }))
+        this.store$.dispatch(setCurrentSession({ session }))
       } 
 
       return;
@@ -212,6 +214,11 @@ export class ProcessEventService {
       return;
     }
 
+    if (event instanceof DeleteSessionEvent) {
+      this.store$.dispatch(eventDeleteSession({ sessionId: event.sessionId }))
+      return;
+    }
+
     if (event instanceof DeleteTicketEvent) {
       this.store$.dispatch(eventDeleteTicket({ ticketId: event.ticketId }))
       return;
@@ -278,6 +285,7 @@ export class ProcessEventService {
       || event instanceof AddSprintEvent
       || event instanceof AddSquadEvent
       || event instanceof AddTicketEvent
+      || event instanceof DeleteSessionEvent
   }
 
   private showLoadingSpinner() {

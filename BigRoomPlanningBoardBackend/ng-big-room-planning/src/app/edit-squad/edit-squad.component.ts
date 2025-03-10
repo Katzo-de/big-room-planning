@@ -28,7 +28,7 @@ import {
 } from '@ngrx/store';
 
 import { ISquad } from '../client';
-import { CreatEventService } from '../create-event.service';
+import { CreateEventService } from '../create-event.service';
 import {
   EditEntityComponent,
   EditEntityPageComponent,
@@ -78,7 +78,7 @@ export class EditSquadComponent extends EditEntityComponent implements OnInit, O
     private activatedRoute: ActivatedRoute,
     private handleErrorService: HandleErrorService,
     private store$: Store<any>,
-    private createEventService: CreatEventService
+    private createEventService: CreateEventService
   ) {
     super();
   }
