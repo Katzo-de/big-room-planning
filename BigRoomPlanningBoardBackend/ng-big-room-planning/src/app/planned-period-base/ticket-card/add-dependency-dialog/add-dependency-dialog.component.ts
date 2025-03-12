@@ -49,7 +49,7 @@ import {
   Squad,
   Ticket,
 } from '../../../client';
-import { CreatEventService } from '../../../create-event.service';
+import { CreateEventService } from '../../../create-event.service';
 import { IterationNamePipe } from '../../../iteration-name.pipe';
 import {
   getDependencies,
@@ -125,7 +125,7 @@ export class AddDependencyDialogComponent implements OnInit {
     private store$: Store<any>,
     private matDialogRef: MatDialogRef<AddDependencyDialogComponent>,
     private ngZone: NgZone,
-    private createEventService: CreatEventService
+    private createEventService: CreateEventService
   ) { }
 
   ngOnInit() {

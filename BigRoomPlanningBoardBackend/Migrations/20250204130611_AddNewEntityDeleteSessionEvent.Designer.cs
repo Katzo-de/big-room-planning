@@ -3,6 +3,7 @@ using System;
 using BigRoomPlanningBoardBackend;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BigRoomPlanningBoardBackend.Migrations
 {
     [DbContext(typeof(BigRoomPlanningContext))]
-    partial class BigRoomPlanningContextModelSnapshot : ModelSnapshot
+    [Migration("20250204130611_AddNewEntityDeleteSessionEvent")]
+    partial class AddNewEntityDeleteSessionEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -27,9 +30,6 @@ namespace BigRoomPlanningBoardBackend.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("DependencyTicketId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IterationType")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("DependencyId");
@@ -247,9 +247,6 @@ namespace BigRoomPlanningBoardBackend.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("DependencyTicketId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IterationType")
                         .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("AddDependencyEvent");
@@ -489,28 +486,6 @@ namespace BigRoomPlanningBoardBackend.Migrations
                         });
 
                     b.HasDiscriminator().HasValue("DeleteTicketEvent");
-                });
-
-            modelBuilder.Entity("BigRoomPlanningBoardBackend.Events.Types.EditDependencyEvent", b =>
-                {
-                    b.HasBaseType("BigRoomPlanningBoardBackend.Events.Event");
-
-                    b.Property<int>("DependencyId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IterationType")
-                        .HasColumnType("INTEGER");
-
-                    b.ToTable("Events", t =>
-                        {
-                            t.Property("DependencyId")
-                                .HasColumnName("EditDependencyEvent_DependencyId");
-
-                            t.Property("IterationType")
-                                .HasColumnName("EditDependencyEvent_IterationType");
-                        });
-
-                    b.HasDiscriminator().HasValue("EditDependencyEvent");
                 });
 
             modelBuilder.Entity("BigRoomPlanningBoardBackend.Events.Types.EditPlannedPeriodEvent", b =>

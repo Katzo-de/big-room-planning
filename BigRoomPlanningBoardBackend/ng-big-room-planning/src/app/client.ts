@@ -206,6 +206,11 @@ export abstract class Event implements IEvent {
             result.init(data);
             return result;
         }
+        if (data["discriminator"] === "DeleteSessionEvent") {
+            let result = new DeleteSessionEvent();
+            result.init(data);
+            return result;
+        }
         if (data["discriminator"] === "DeleteTicketEvent") {
             let result = new DeleteTicketEvent();
             result.init(data);
@@ -716,6 +721,40 @@ export class DeleteRiskEvent extends Event implements IDeleteRiskEvent {
 
 export interface IDeleteRiskEvent extends IEvent {
     riskId?: number;
+}
+
+export class DeleteSessionEvent extends Event implements IDeleteSessionEvent {
+    deleteSessionId?: string | undefined;
+
+    constructor(data?: IDeleteSessionEvent) {
+        super(data);
+        this._discriminator = "DeleteSessionEvent";
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.deleteSessionId = _data["deleteSessionId"];
+        }
+    }
+
+    static override fromJS(data: any): DeleteSessionEvent {
+        data = typeof data === 'object' ? data : {};
+        let result = new DeleteSessionEvent();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["deleteSessionId"] = this.deleteSessionId;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IDeleteSessionEvent extends IEvent {
+    deleteSessionId?: string | undefined;
 }
 
 export class DeleteTicketEvent extends Event implements IDeleteTicketEvent {

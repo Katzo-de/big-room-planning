@@ -35,9 +35,10 @@ import {
   eventEditSprint,
   eventEditSquad,
   eventEditTicket,
-  initializCurrentSeesion as initializCurrentSession,
+  setCurrentSession,
   setCreateSessionFailed,
   setLastEventId,
+  eventDeleteSession,
 } from './app.actions';
 
 export interface AppState {
@@ -50,7 +51,7 @@ export interface AppState {
     squadSprintStats: SquadSprintStats[];
     risks: Risk[];
     lastEventId: number;
-    currentSession?: Session;
+    currentSession?: Session | undefined;
     knownSessions: { [sessionId: string]: Session };
     isConnected: boolean;
     connectionError?: string;
@@ -68,6 +69,7 @@ export const initialAppState: AppState = {
     squadSprintStats: [],
     risks: [],
     knownSessions: {},
+    currentSession: undefined,
     isConnected: false,
     createSessionFailed: false
 };
@@ -164,6 +166,13 @@ export const appReducer = createReducer(
     on(eventDeleteRisk, (state, action) => ({
         ...state,
         risks: state.risks.filter(x => x.riskId !== action.riskId)
+    })),
+    on(eventDeleteSession, (state, action) => ({
+        ...state,
+        knownSessions: Object.keys(state.knownSessions)
+            .filter(key => key !== action.sessionId)
+            .reduce((acc, key) => ({ ...acc, [key]: state.knownSessions[key] }), {}),
+        currentSession: state.currentSession?.sessionId === action.sessionId ? undefined : state.currentSession
     })),
     on(eventDeleteTicket, (state, action) => ({
         ...state,
@@ -297,7 +306,7 @@ export const appReducer = createReducer(
             tickets
         };
     }),
-    on(initializCurrentSession, (state, action) => ({
+    on(setCurrentSession, (state, action) => ({
         ...state,
         currentSession: action.session,
         createSessionFailed: false

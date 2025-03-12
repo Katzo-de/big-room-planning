@@ -1,0 +1,23 @@
+<mat-card style="width: auto;" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Hello!</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <span style="margin-top: 0.5rem;">Please enter your name below. Your name will be visible to others.</span>
+    <form [formGroup]="formGroup" (submit)="createSession()">
+      <mat-form-field style="margin-top: 0.5rem; width: 100%;">
+        <mat-label>Your name</mat-label>
+        <input matInput formControlName="name">
+        @if (!formGroup.controls.name.valid) {
+          <mat-error i18n>Your name is required</mat-error>
+        }
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions [align]="'end'">
+    <button type="button" [disabled]="submitted" (click)="createSession()" mat-flat-button>
+      <mat-icon>login</mat-icon>
+      <span>Login</span>
+    </button>
+  </mat-card-actions>
+</mat-card>
