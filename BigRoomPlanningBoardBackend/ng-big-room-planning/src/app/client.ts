@@ -211,6 +211,11 @@ export abstract class Event implements IEvent {
             result.init(data);
             return result;
         }
+        if (data["discriminator"] === "DeleteSessionEvent") {
+            let result = new DeleteSessionEvent();
+            result.init(data);
+            return result;
+        }
         if (data["discriminator"] === "DeleteTicketEvent") {
             let result = new DeleteTicketEvent();
             result.init(data);
@@ -218,6 +223,11 @@ export abstract class Event implements IEvent {
         }
         if (data["discriminator"] === "EditPlannedPeriodEvent") {
             let result = new EditPlannedPeriodEvent();
+            result.init(data);
+            return result;
+        }
+        if (data["discriminator"] === "EditDependencyEvent") {
+            let result = new EditDependencyEvent();
             result.init(data);
             return result;
         }
@@ -270,6 +280,7 @@ export interface IEvent {
 
 export class AddDependencyEvent extends Event implements IAddDependencyEvent {
     dependencyId?: number | undefined;
+    inSameSprint?: boolean;
     dependantTicketId?: number;
     dependencyTicketId?: number;
 
@@ -282,6 +293,7 @@ export class AddDependencyEvent extends Event implements IAddDependencyEvent {
         super.init(_data);
         if (_data) {
             this.dependencyId = _data["dependencyId"];
+            this.inSameSprint = _data["inSameSprint"];
             this.dependantTicketId = _data["dependantTicketId"];
             this.dependencyTicketId = _data["dependencyTicketId"];
         }
@@ -297,6 +309,7 @@ export class AddDependencyEvent extends Event implements IAddDependencyEvent {
     override toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["dependencyId"] = this.dependencyId;
+        data["inSameSprint"] = this.inSameSprint;
         data["dependantTicketId"] = this.dependantTicketId;
         data["dependencyTicketId"] = this.dependencyTicketId;
         super.toJSON(data);
@@ -306,6 +319,7 @@ export class AddDependencyEvent extends Event implements IAddDependencyEvent {
 
 export interface IAddDependencyEvent extends IEvent {
     dependencyId?: number | undefined;
+    inSameSprint?: boolean;
     dependantTicketId?: number;
     dependencyTicketId?: number;
 }
@@ -778,6 +792,40 @@ export interface IDeleteRiskEvent extends IEvent {
     riskId?: number;
 }
 
+export class DeleteSessionEvent extends Event implements IDeleteSessionEvent {
+    deleteSessionId?: string | undefined;
+
+    constructor(data?: IDeleteSessionEvent) {
+        super(data);
+        this._discriminator = "DeleteSessionEvent";
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.deleteSessionId = _data["deleteSessionId"];
+        }
+    }
+
+    static override fromJS(data: any): DeleteSessionEvent {
+        data = typeof data === 'object' ? data : {};
+        let result = new DeleteSessionEvent();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["deleteSessionId"] = this.deleteSessionId;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IDeleteSessionEvent extends IEvent {
+    deleteSessionId?: string | undefined;
+}
+
 export class DeleteTicketEvent extends Event implements IDeleteTicketEvent {
     ticketId?: number;
 
@@ -860,6 +908,44 @@ export interface IEditPlannedPeriodEvent extends IEvent {
     startDay?: Date;
     endDay?: Date;
     bigRoomPlanningAt?: Date | undefined;
+}
+
+export class EditDependencyEvent extends Event implements IEditDependencyEvent {
+    dependencyId?: number;
+    inSameSprint?: boolean;
+
+    constructor(data?: IEditDependencyEvent) {
+        super(data);
+        this._discriminator = "EditDependencyEvent";
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.dependencyId = _data["dependencyId"];
+            this.inSameSprint = _data["inSameSprint"];
+        }
+    }
+
+    static override fromJS(data: any): EditDependencyEvent {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditDependencyEvent();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dependencyId"] = this.dependencyId;
+        data["inSameSprint"] = this.inSameSprint;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IEditDependencyEvent extends IEvent {
+    dependencyId?: number;
+    inSameSprint?: boolean;
 }
 
 export class EditRiskEvent extends Event implements IEditRiskEvent {
@@ -1348,6 +1434,7 @@ export interface IPlannedPeriod {
 
 export class Dependency implements IDependency {
     dependencyId?: number;
+    inSameSprint?: boolean;
     dependantTicketId?: number;
     dependencyTicketId?: number;
 
@@ -1363,6 +1450,7 @@ export class Dependency implements IDependency {
     init(_data?: any) {
         if (_data) {
             this.dependencyId = _data["dependencyId"];
+            this.inSameSprint = _data["inSameSprint"];
             this.dependantTicketId = _data["dependantTicketId"];
             this.dependencyTicketId = _data["dependencyTicketId"];
         }
@@ -1378,6 +1466,7 @@ export class Dependency implements IDependency {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["dependencyId"] = this.dependencyId;
+        data["inSameSprint"] = this.inSameSprint;
         data["dependantTicketId"] = this.dependantTicketId;
         data["dependencyTicketId"] = this.dependencyTicketId;
         return data;
@@ -1386,6 +1475,7 @@ export class Dependency implements IDependency {
 
 export interface IDependency {
     dependencyId?: number;
+    inSameSprint?: boolean;
     dependantTicketId?: number;
     dependencyTicketId?: number;
 }

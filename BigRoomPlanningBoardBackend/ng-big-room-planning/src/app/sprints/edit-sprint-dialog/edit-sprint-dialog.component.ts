@@ -38,7 +38,7 @@ import {
   PlannedPeriod,
   Sprint,
 } from '../../client';
-import { CreatEventService } from '../../create-event.service';
+import { CreateEventService } from '../../create-event.service';
 import { PeriodNamePipe } from '../../pipes/period-name.pipe';
 import {
   getPlannedPeriods,
@@ -92,7 +92,7 @@ export class EditSprintDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) private data: Sprint | undefined,
     private dialogRef: MatDialogRef<EditSprintDialogComponent>,
     private store$: Store<any>,
-    private createEventService: CreatEventService
+    private createEventService: CreateEventService
   ) {
 
   }
@@ -129,7 +129,7 @@ export class EditSprintDialogComponent implements OnInit, OnDestroy {
 
     this.isNew = !this.data;
     this.title = this.isNew
-      ? $localize`Create new Interation`
+      ? $localize`Create new Iteration`
       : $localize`Edit Iteration "${this.data.name}"`;
     
     this.closeAction = this.isNew

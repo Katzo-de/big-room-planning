@@ -29,14 +29,16 @@ import {
   eventDeleteDependency,
   eventDeleteRisk,
   eventDeleteTicket,
+  eventEditDependency,
   eventEditPlannedPeriod,
   eventEditRisk,
   eventEditSprint,
   eventEditSquad,
   eventEditTicket,
-  initializCurrentSeesion as initializCurrentSession,
+  setCurrentSession,
   setCreateSessionFailed,
   setLastEventId,
+  eventDeleteSession,
 } from './app.actions';
 
 export interface AppState {
@@ -49,7 +51,7 @@ export interface AppState {
     squadSprintStats: SquadSprintStats[];
     risks: Risk[];
     lastEventId: number;
-    currentSession?: Session;
+    currentSession?: Session | undefined;
     knownSessions: { [sessionId: string]: Session };
     isConnected: boolean;
     connectionError?: string;
@@ -67,6 +69,7 @@ export const initialAppState: AppState = {
     squadSprintStats: [],
     risks: [],
     knownSessions: {},
+    currentSession: undefined,
     isConnected: false,
     createSessionFailed: false
 };
@@ -164,6 +167,13 @@ export const appReducer = createReducer(
         ...state,
         risks: state.risks.filter(x => x.riskId !== action.riskId)
     })),
+    on(eventDeleteSession, (state, action) => ({
+        ...state,
+        knownSessions: Object.keys(state.knownSessions)
+            .filter(key => key !== action.sessionId)
+            .reduce((acc, key) => ({ ...acc, [key]: state.knownSessions[key] }), {}),
+        currentSession: state.currentSession?.sessionId === action.sessionId ? undefined : state.currentSession
+    })),
     on(eventDeleteTicket, (state, action) => ({
         ...state,
         tickets: state.tickets.filter(x => x.ticketId !== action.ticketId)
@@ -176,6 +186,16 @@ export const appReducer = createReducer(
                     ? action.plannedPeriod
                     : x
             )
+    })),
+    on(eventEditDependency, (state, action) => ({
+        ...state,
+        dependencies: [
+            ...state.dependencies.filter(x => x.dependencyId !== action.dependency.dependencyId),
+            new Dependency({
+                ...state.dependencies.find(x => x.dependencyId === action.dependency.dependencyId),
+                inSameSprint: action.dependency.inSameSprint,
+            })
+        ],
     })),
     on(eventEditRisk, (state, action) => ({
         ...state,
@@ -286,7 +306,7 @@ export const appReducer = createReducer(
             tickets
         };
     }),
-    on(initializCurrentSession, (state, action) => ({
+    on(setCurrentSession, (state, action) => ({
         ...state,
         currentSession: action.session,
         createSessionFailed: false

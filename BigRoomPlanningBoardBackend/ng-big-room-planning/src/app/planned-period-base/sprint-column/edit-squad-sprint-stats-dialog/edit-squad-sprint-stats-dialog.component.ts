@@ -20,7 +20,7 @@ import {
 } from '@angular/material/slider';
 
 import { ISquadSprintStats } from '../../../client';
-import { CreatEventService } from '../../../create-event.service';
+import { CreateEventService } from '../../../create-event.service';
 import {
   MatFormFieldModule
 } from '@angular/material/form-field';
@@ -52,7 +52,7 @@ export class EditSquadSprintStatsDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: ISquadSprintStats,
     private matDialogRef: MatDialogRef<EditSquadSprintStatsDialogComponent>,
-    private createEventService: CreatEventService
+    private createEventService: CreateEventService
   ) {
 
   }

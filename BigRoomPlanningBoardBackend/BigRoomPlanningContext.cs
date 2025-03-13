@@ -39,8 +39,10 @@ namespace BigRoomPlanningBoardBackend
         public DbSet<AddDependencyTicketEvent> AddDependencyTicketEvents { get; set; }
         public DbSet<DeleteDependencyEvent> DeleteDependencyEvents { get; set; }
         public DbSet<DeleteRiskEvent> DeleteRiskEvents { get; set; }
+        public DbSet<DeleteSessionEvent> DeleteSessionEvents { get; set; }
         public DbSet<DeleteTicketEvent> DeleteTicketEvents { get; set; }
         public DbSet<EditPlannedPeriodEvent> EditPlannedPeriodEvents { get; set; }
+        public DbSet<EditDependencyEvent> EditDependencyEvents { get; set; }
         public DbSet<EditRiskEvent> EditRiskEvents { get; set; }
         public DbSet<EditSprintEvent> EditSprintEvents { get; set; }
         public DbSet<EditSquadEvent> EditSquadEvents { get; set; }

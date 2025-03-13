@@ -19,7 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
 import { ITicket } from '../../client';
-import { CreatEventService } from '../../create-event.service';
+import { CreateEventService } from '../../create-event.service';
 
 @Component({
   selector: 'app-edit-ticket-dialog',
@@ -46,7 +46,7 @@ export class EditTicketDialogComponent implements OnInit {
   constructor (
     @Inject(MAT_DIALOG_DATA) private ticket: ITicket,
     private dialogRef: MatDialogRef<EditTicketDialogComponent>,
-    private createEventService: CreatEventService
+    private createEventService: CreateEventService
   ) {
 
   }

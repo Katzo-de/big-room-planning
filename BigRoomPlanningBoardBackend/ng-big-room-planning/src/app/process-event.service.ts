@@ -21,8 +21,10 @@ import {
   AddTicketEvent,
   DeleteDependencyEvent,
   DeleteRiskEvent,
+  DeleteSessionEvent,
   DeleteTicketEvent,
   Dependency,
+  EditDependencyEvent,
   EditPlannedPeriodEvent,
   EditRiskEvent,
   EditSprintEvent,
@@ -51,14 +53,16 @@ import {
   eventDeleteDependency,
   eventDeleteRisk,
   eventDeleteTicket,
+  eventEditDependency,
   eventEditPlannedPeriod,
   eventEditRisk,
   eventEditSprint,
   eventEditSquad,
   eventEditTicket,
-  initializCurrentSeesion,
+  setCurrentSession,
   setCreateSessionFailed,
   setLastEventId,
+  eventDeleteSession,
 } from './store/app.actions';
 import { getLastEventId } from './store/app.selectors';
 
@@ -129,7 +133,7 @@ export class ProcessEventService {
       this.store$.dispatch(eventAddSession({ session }))
 
       if (session.sessionId === currentSessionId) {
-        this.store$.dispatch(initializCurrentSeesion({ session }))
+        this.store$.dispatch(setCurrentSession({ session }))
       } 
 
       return;
@@ -222,8 +226,18 @@ export class ProcessEventService {
       return;
     }
 
+    if (event instanceof DeleteSessionEvent) {
+      this.store$.dispatch(eventDeleteSession({ sessionId: event.sessionId }))
+      return;
+    }
+
     if (event instanceof DeleteTicketEvent) {
       this.store$.dispatch(eventDeleteTicket({ ticketId: event.ticketId }))
+      return;
+    }
+
+    if (event instanceof EditDependencyEvent) {
+      this.store$.dispatch(eventEditDependency({ dependency: Dependency.fromJS(event) }))
       return;
     }
 
@@ -289,6 +303,7 @@ export class ProcessEventService {
       || event instanceof AddSquadEvent
       || event instanceof AddDependencyTicketEvent
       || event instanceof AddTicketEvent
+      || event instanceof DeleteSessionEvent
   }
 
   private showLoadingSpinner() {

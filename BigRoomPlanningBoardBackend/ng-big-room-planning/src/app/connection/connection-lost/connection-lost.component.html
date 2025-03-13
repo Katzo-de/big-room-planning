@@ -2,11 +2,11 @@
     <mat-card>
         @if (!error) {
             <mat-card-header>
-                <mat-card-title>Trying to connect to the server...</mat-card-title>
+                <mat-card-title i18n>Attempts to establish a connection to the server</mat-card-title>
             </mat-card-header>
         } @else {
             <mat-card-header>
-                <mat-card-title>Failed to connecto to the server:</mat-card-title>
+                <mat-card-title i18n>The connection to the server could not be established:</mat-card-title>
             </mat-card-header>
             <mat-card-content><p i18n>{{ error }}</p></mat-card-content>
             <mat-card-actions style="width: 100%;"><button style="width: 100%;" mat-flat-button (click)="reconnect()">Reconnect</button></mat-card-actions>

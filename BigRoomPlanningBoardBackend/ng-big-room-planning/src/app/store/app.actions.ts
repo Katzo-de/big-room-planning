@@ -39,7 +39,11 @@ export const eventDeleteDependency = createAction('eventDeleteDependency', props
 
 export const eventDeleteRisk = createAction('eventDeleteRisk', props<{ riskId: number }>());
 
+export const eventDeleteSession = createAction('eventDeleteSession', props<{ sessionId: string }>());
+
 export const eventDeleteTicket = createAction('eventDeleteTicket', props<{ ticketId: number }>());
+
+export const eventEditDependency = createAction('eventEditDependency', props<{ dependency: Dependency }>());
 
 export const eventEditPlannedPeriod = createAction('eventEditPlannedPeriod', props<{ plannedPeriod: PlannedPeriod }>());
 
@@ -51,7 +55,7 @@ export const eventEditSquad = createAction('eventEditSquad', props<{ squad: Squa
 
 export const eventEditTicket = createAction('eventEditTicket', props<{ ticket: Ticket }>());
 
-export const initializCurrentSeesion = createAction('initializCurrentSeesion', props<{ session: Session }>());
+export const setCurrentSession = createAction('setCurrentSession', props<{ session: Session }>());
 
 export const setCreateSessionFailed = createAction('createSessionFailed', props<{failed: boolean}>());
 
