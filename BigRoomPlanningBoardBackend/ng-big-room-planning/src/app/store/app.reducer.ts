@@ -193,7 +193,7 @@ export const appReducer = createReducer(
             ...state.dependencies.filter(x => x.dependencyId !== action.dependency.dependencyId),
             new Dependency({
                 ...state.dependencies.find(x => x.dependencyId === action.dependency.dependencyId),
-                iterationType: action.dependency.iterationType,
+                inSameSprint: action.dependency.inSameSprint,
             })
         ],
     })),

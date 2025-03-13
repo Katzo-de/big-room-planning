@@ -29,7 +29,7 @@ namespace BigRoomPlanningBoardBackend.Migrations
                     b.Property<int>("DependencyTicketId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IterationType")
+                    b.Property<bool>("InSameSprint")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("DependencyId");
@@ -249,7 +249,7 @@ namespace BigRoomPlanningBoardBackend.Migrations
                     b.Property<int>("DependencyTicketId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IterationType")
+                    b.Property<bool>("InSameSprint")
                         .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("AddDependencyEvent");
@@ -498,7 +498,7 @@ namespace BigRoomPlanningBoardBackend.Migrations
                     b.Property<int>("DependencyId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IterationType")
+                    b.Property<bool>("InSameSprint")
                         .HasColumnType("INTEGER");
 
                     b.ToTable("Events", t =>
@@ -506,8 +506,8 @@ namespace BigRoomPlanningBoardBackend.Migrations
                             t.Property("DependencyId")
                                 .HasColumnName("EditDependencyEvent_DependencyId");
 
-                            t.Property("IterationType")
-                                .HasColumnName("EditDependencyEvent_IterationType");
+                            t.Property("InSameSprint")
+                                .HasColumnName("EditDependencyEvent_InSameSprint");
                         });
 
                     b.HasDiscriminator().HasValue("EditDependencyEvent");

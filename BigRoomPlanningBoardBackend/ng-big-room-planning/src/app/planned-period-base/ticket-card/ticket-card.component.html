@@ -2,35 +2,37 @@
     <mat-card-header>
         <span>{{ ticket?.title }}</span>
         @if(mode === 'dependency') {
-            <span class="squad-name">{{ ticket?.squadId | squadName | async }}</span>
+            <mat-chip style="margin-left: auto; height: 1.5rem !important;">
+                <div class="squad-name">
+                    <mat-icon>group</mat-icon>
+                    <span>{{ ticket?.squadId | squadName | async }}</span>
+                </div>
+            </mat-chip>
         }
     </mat-card-header>
     <mat-card-content>
         <div class="dependency-container">
-            <div class="item-container">
-                @if(dependenciesCount$ | async) {
+            @if(dependenciesCount$ | async) {
                 <div class="item" [class.fullfilled]="dependenciesFullfilled$ | async" (click)="addDependency()">
-                    <mat-icon>
+                    <mat-icon  [matBadge]="dependenciesCount$ | async" [matBadgeOverlap]="true">
                         keyboard_tab
                     </mat-icon>
-                    <span>
-                        {{ dependenciesCount$ | async }}
-                    </span>
                 </div>
-                }
-            </div>
-            <div class="item-container">
-                @if(dependantsCount$ | async) {
+            }
+            @if(dependantsCount$ | async) {
                 <div class="item" [class.fullfilled]="dependantsFullfilled$ | async" (click)="addDependency()">
-                    <mat-icon>
+                    <mat-icon  [matBadge]="dependantsCount$ | async " [matBadgeOverlap]="true">
                         start
                     </mat-icon>
-                    <span>
-                        {{ dependantsCount$ | async }}
-                    </span>
                 </div>
-                }
-            </div>
+            }
+            @if(sameSprintCount$ | async) {
+                <div class="item" [class.fullfilled]="sameSprintFullfilled$ | async" (click)="addDependency()">
+                    <mat-icon  [matBadge]="sameSprintCount$ | async" [matBadgeOverlap]="true">
+                        link
+                    </mat-icon>
+                </div>
+            }
         </div>
     </mat-card-content>
 </mat-card>

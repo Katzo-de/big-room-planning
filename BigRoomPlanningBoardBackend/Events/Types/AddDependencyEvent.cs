@@ -8,11 +8,13 @@ namespace BigRoomPlanningBoardBackend.Events.Types
         /// Will be filled after the event is processed
         /// </summary>
         public int? DependencyId { get; set; }
-        
+
         /// <summary>
-        /// Interation
+        /// Indicates whether the associated tickets must be completed within the same sprint.
+        /// When set to true, the tickets are required to be resolved together in the same sprint. 
+        /// If set to false, the tickets are required to be addressed in different sprints.
         /// </summary>
-        public DependencyIterationType IterationType { get; set; }
+        public bool InSameSprint { get; set; }
 
         /// <summary>
         /// Ticket that depends on the other ticket. This Ticket must be planned after the other Ticket
@@ -40,7 +42,7 @@ namespace BigRoomPlanningBoardBackend.Events.Types
             {
                 DependencyTicketId = DependencyTicketId,
                 DependantTicketId = DependantTicketId,
-                IterationType = IterationType,
+                InSameSprint = InSameSprint,
             };
 
             bigRoomPlanningContext.Dependencies.Add(dependency);

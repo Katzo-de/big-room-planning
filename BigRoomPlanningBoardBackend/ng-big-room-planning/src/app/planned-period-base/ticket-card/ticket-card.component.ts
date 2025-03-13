@@ -32,7 +32,6 @@ import {
 } from '@ngrx/store';
 
 import {
-  DependencyIterationType,
   IDependency,
   Ticket,
 } from '../../client';
@@ -52,6 +51,8 @@ import {
 import {
   AddDependencyDialogComponent,
 } from './add-dependency-dialog/add-dependency-dialog.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
 
 interface DependencyWithInfo extends IDependency {
   fullfilled: boolean;
@@ -69,7 +70,9 @@ interface DependencyWithInfo extends IDependency {
     CdkMenuItem,
     CdkContextMenuTrigger,
     MatIcon,
-    SquadNamePipe
+    SquadNamePipe,
+    MatChipsModule,
+    MatBadgeModule
   ],
   templateUrl: './ticket-card.component.html',
   styleUrl: './ticket-card.component.scss'
@@ -84,12 +87,16 @@ export class TicketCardComponent implements OnChanges {
 
   dependants$: Observable<DependencyWithInfo[]>;
   dependencies$: Observable<DependencyWithInfo[]>;
+  dependenciesSameSprint$: Observable<DependencyWithInfo[]>;
 
   dependantsCount$: Observable<number>;
   dependantsFullfilled$: Observable<boolean>;
 
   dependenciesCount$: Observable<number>;
   dependenciesFullfilled$: Observable<boolean>;
+
+  sameSprintCount$: Observable<number>;
+  sameSprintFullfilled$: Observable<boolean>;
 
   isHighlightUnfullfilledDependency$: Observable<boolean> = of(false);
   isHighlightFullfilledDependency$: Observable<boolean> = of(false);
@@ -124,7 +131,7 @@ export class TicketCardComponent implements OnChanges {
 
       this.dependants$ = this.store$.pipe(
         select(getDependencies),
-        map(all => all.filter(x => x.dependencyTicketId === this.ticket.ticketId)),
+        map(all => all.filter(x => x.dependencyTicketId === this.ticket.ticketId && !x.inSameSprint)),
         switchMap(dependants => tickets$.pipe(
           map(tickets => ({ tickets, dependants })),
           switchMap(infos => sprintInfos$.pipe(
@@ -144,18 +151,7 @@ export class TicketCardComponent implements OnChanges {
           } else if (!currentSprint) {
             fullfilled = false;
           } else {
-            switch(dependant.iterationType) {
-              case DependencyIterationType.CanMatch:
-                fullfilled = currentSprint.sprintId === targetSprint.sprintId || currentSprint.endsAt.getTime() < targetSprint.startsAt.getTime();
-                break;
-              case DependencyIterationType.MustMatch:
-                fullfilled = currentSprint.sprintId === targetSprint.sprintId 
-                break;
-              case DependencyIterationType.CannotMatch:
-              default:
-                fullfilled = currentSprint.sprintId !== targetSprint.sprintId && currentSprint.endsAt.getTime() < targetSprint.startsAt.getTime();
-                break;
-            }
+            fullfilled = currentSprint.sprintId !== targetSprint.sprintId && currentSprint.endsAt.getTime() < targetSprint.startsAt.getTime();
           }
 
           return {
@@ -167,7 +163,7 @@ export class TicketCardComponent implements OnChanges {
 
       this.dependencies$ = this.store$.pipe(
         select(getDependencies),
-        map(all => all.filter(x => x.dependantTicketId === this.ticket.ticketId)),
+        map(all => all.filter(x => x.dependantTicketId === this.ticket.ticketId && !x.inSameSprint)),
         switchMap(dependencies => tickets$.pipe(
           map(tickets => ({ tickets, dependencies })),
           switchMap(infos => sprintInfos$.pipe(
@@ -187,18 +183,7 @@ export class TicketCardComponent implements OnChanges {
           } else if (!previousSprint) {
             fullfilled = false;
           } else {
-            switch(dependency.iterationType) {
-              case DependencyIterationType.CanMatch:
-                fullfilled = currentSprint.sprintId === previousSprint.sprintId || previousSprint.endsAt.getTime() < currentSprint.startsAt.getTime();
-                break;
-              case DependencyIterationType.MustMatch:
-                fullfilled = currentSprint.sprintId === previousSprint.sprintId;
-                break;
-              case DependencyIterationType.CannotMatch:
-              default:
-                fullfilled = currentSprint.sprintId !== previousSprint.sprintId && previousSprint.endsAt.getTime() < currentSprint.startsAt.getTime();
-                break;
-            }
+            fullfilled = currentSprint.sprintId !== previousSprint.sprintId && previousSprint.endsAt.getTime() < currentSprint.startsAt.getTime();
           }
 
           return {
@@ -208,10 +193,47 @@ export class TicketCardComponent implements OnChanges {
         }))
       );
 
+      this.dependenciesSameSprint$ = this.store$.pipe(
+        select(getDependencies),
+        map(all => all.filter(ticket => 
+          (ticket.dependantTicketId === this.ticket.ticketId 
+          || ticket.dependencyTicketId === this.ticket.ticketId)
+          && ticket.inSameSprint
+        )),
+         switchMap(dependenciesSameSprint => tickets$.pipe(
+          map(tickets => ({ tickets, dependenciesSameSprint })),
+          switchMap(infos => sprintInfos$.pipe(
+            map(sprintInfos => ({...sprintInfos, ...infos}))
+          ))
+        )),
+        map(({ currentSprint, dependenciesSameSprint, sprints, tickets }) => dependenciesSameSprint.map(dependenciesSameSprint => {
+          let fullfilled = false;
+
+          const dependencyTicket = tickets.find(x => x.ticketId === dependenciesSameSprint.dependencyTicketId)
+
+          const previousSprint = dependencyTicket.sprintId ? sprints.find(s => s.sprintId === dependencyTicket.sprintId) : null
+          
+          const dependantTicket = tickets.find(x => x.ticketId === dependenciesSameSprint.dependantTicketId)
+
+          const targetSprint = dependantTicket.sprintId ? sprints.find(s => s.sprintId === dependantTicket.sprintId) : null
+
+          fullfilled = currentSprint && targetSprint && previousSprint ? 
+            currentSprint.sprintId === targetSprint.sprintId && currentSprint.sprintId === previousSprint.sprintId : 
+            currentSprint === targetSprint && currentSprint === previousSprint; 
+
+          return {
+            ...dependenciesSameSprint,
+            fullfilled
+          }
+        }))
+      );
+
       this.dependantsCount$ = this.dependants$.pipe(map(x => x.length));
       this.dependantsFullfilled$ = this.dependants$.pipe(map(x => x.length === 0 ? true : x.every(y => y.fullfilled)));
       this.dependenciesCount$ = this.dependencies$.pipe(map(x => x.length));
       this.dependenciesFullfilled$ = this.dependencies$.pipe(map(x => x.length === 0 ? true : x.every(y => y.fullfilled)));
+      this.sameSprintCount$ = this.dependenciesSameSprint$.pipe(map(x => x.length));
+      this.sameSprintFullfilled$ = this.dependenciesSameSprint$.pipe(map(x => x.length === 0 ? true : x.every(y => y.fullfilled)));
     }
 
     if(simpleChanges['mode'] || simpleChanges['ticket']) {
@@ -224,8 +246,9 @@ export class TicketCardComponent implements OnChanges {
         const allDeps$: Observable<DependencyWithInfo[]> = combineLatest([
           this.dependants$,
           this.dependencies$,
+          this.dependenciesSameSprint$
         ]).pipe(
-          map(([a, b]) => ([...a, ...b]))
+          map(([a, b, c]) => ([...a, ...b, ...c]))
         );
 
         this.isHighlightUnfullfilledDependency$ = combineLatest([

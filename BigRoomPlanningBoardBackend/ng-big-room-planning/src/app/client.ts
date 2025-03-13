@@ -275,7 +275,7 @@ export interface IEvent {
 
 export class AddDependencyEvent extends Event implements IAddDependencyEvent {
     dependencyId?: number | undefined;
-    iterationType?: DependencyIterationType;
+    inSameSprint?: boolean;
     dependantTicketId?: number;
     dependencyTicketId?: number;
 
@@ -288,7 +288,7 @@ export class AddDependencyEvent extends Event implements IAddDependencyEvent {
         super.init(_data);
         if (_data) {
             this.dependencyId = _data["dependencyId"];
-            this.iterationType = _data["iterationType"];
+            this.inSameSprint = _data["inSameSprint"];
             this.dependantTicketId = _data["dependantTicketId"];
             this.dependencyTicketId = _data["dependencyTicketId"];
         }
@@ -304,7 +304,7 @@ export class AddDependencyEvent extends Event implements IAddDependencyEvent {
     override toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["dependencyId"] = this.dependencyId;
-        data["iterationType"] = this.iterationType;
+        data["inSameSprint"] = this.inSameSprint;
         data["dependantTicketId"] = this.dependantTicketId;
         data["dependencyTicketId"] = this.dependencyTicketId;
         super.toJSON(data);
@@ -314,15 +314,9 @@ export class AddDependencyEvent extends Event implements IAddDependencyEvent {
 
 export interface IAddDependencyEvent extends IEvent {
     dependencyId?: number | undefined;
-    iterationType?: DependencyIterationType;
+    inSameSprint?: boolean;
     dependantTicketId?: number;
     dependencyTicketId?: number;
-}
-
-export enum DependencyIterationType {
-    MustMatch = 0,
-    CanMatch = 1,
-    CannotMatch = 2,
 }
 
 export class AddOrUpdateSquadSprintStatsEvent extends Event implements IAddOrUpdateSquadSprintStatsEvent {
@@ -843,7 +837,7 @@ export interface IEditPlannedPeriodEvent extends IEvent {
 
 export class EditDependencyEvent extends Event implements IEditDependencyEvent {
     dependencyId?: number;
-    iterationType?: DependencyIterationType;
+    inSameSprint?: boolean;
 
     constructor(data?: IEditDependencyEvent) {
         super(data);
@@ -854,7 +848,7 @@ export class EditDependencyEvent extends Event implements IEditDependencyEvent {
         super.init(_data);
         if (_data) {
             this.dependencyId = _data["dependencyId"];
-            this.iterationType = _data["iterationType"];
+            this.inSameSprint = _data["inSameSprint"];
         }
     }
 
@@ -868,7 +862,7 @@ export class EditDependencyEvent extends Event implements IEditDependencyEvent {
     override toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["dependencyId"] = this.dependencyId;
-        data["iterationType"] = this.iterationType;
+        data["inSameSprint"] = this.inSameSprint;
         super.toJSON(data);
         return data;
     }
@@ -876,7 +870,7 @@ export class EditDependencyEvent extends Event implements IEditDependencyEvent {
 
 export interface IEditDependencyEvent extends IEvent {
     dependencyId?: number;
-    iterationType?: DependencyIterationType;
+    inSameSprint?: boolean;
 }
 
 export class EditRiskEvent extends Event implements IEditRiskEvent {
@@ -1365,7 +1359,7 @@ export interface IPlannedPeriod {
 
 export class Dependency implements IDependency {
     dependencyId?: number;
-    iterationType?: DependencyIterationType;
+    inSameSprint?: boolean;
     dependantTicketId?: number;
     dependencyTicketId?: number;
 
@@ -1381,7 +1375,7 @@ export class Dependency implements IDependency {
     init(_data?: any) {
         if (_data) {
             this.dependencyId = _data["dependencyId"];
-            this.iterationType = _data["iterationType"];
+            this.inSameSprint = _data["inSameSprint"];
             this.dependantTicketId = _data["dependantTicketId"];
             this.dependencyTicketId = _data["dependencyTicketId"];
         }
@@ -1397,7 +1391,7 @@ export class Dependency implements IDependency {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["dependencyId"] = this.dependencyId;
-        data["iterationType"] = this.iterationType;
+        data["inSameSprint"] = this.inSameSprint;
         data["dependantTicketId"] = this.dependantTicketId;
         data["dependencyTicketId"] = this.dependencyTicketId;
         return data;
@@ -1406,7 +1400,7 @@ export class Dependency implements IDependency {
 
 export interface IDependency {
     dependencyId?: number;
-    iterationType?: DependencyIterationType;
+    inSameSprint?: boolean;
     dependantTicketId?: number;
     dependencyTicketId?: number;
 }

@@ -65,7 +65,7 @@
     .dependency {
       margin-left: auto;
       .active {
-        background-color: var(--sys-on-error);
+        background-color: var(--sys-error-container);
         color: var(--sys-error);
 
         &.fullfilled {

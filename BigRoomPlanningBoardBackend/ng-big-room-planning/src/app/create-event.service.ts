@@ -13,7 +13,6 @@ import {
   DeleteRiskEvent,
   DeleteSessionEvent,
   DeleteTicketEvent,
-  DependencyIterationType,
   EditDependencyEvent,
   EditPlannedPeriodEvent,
   EditRiskEvent,
@@ -57,7 +56,7 @@ export class CreateEventService {
 
   addDependency (dependency: IDependency) {
     const event = this.getBaseEvent(AddDependencyEvent);
-    event.iterationType = dependency.iterationType ?? DependencyIterationType.CannotMatch;
+    event.inSameSprint = dependency.inSameSprint ?? false;
     event.dependantTicketId = dependency.dependantTicketId;
     event.dependencyTicketId = dependency.dependencyTicketId;
 
@@ -95,7 +94,7 @@ export class CreateEventService {
   editDependency (dependency: IDependency) {
     const event = this.getBaseEvent(EditDependencyEvent);
     event.dependencyId = dependency.dependencyId;
-    event.iterationType = dependency.iterationType ?? DependencyIterationType.CannotMatch;
+    event.inSameSprint = dependency.inSameSprint ?? false;
 
     this.dataService.sendEvent(event);
   }
