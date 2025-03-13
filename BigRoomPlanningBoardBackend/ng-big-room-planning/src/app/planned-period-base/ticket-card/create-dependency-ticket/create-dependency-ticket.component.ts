@@ -11,14 +11,13 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatTooltip } from '@angular/material/tooltip';
 import { select, Store } from '@ngrx/store';
 import { map, Subscription } from 'rxjs';
 import { Squad, Ticket } from '../../../client';
 import { getSquads } from '../../../store/app.selectors';
 import create from '@kahmannf/iterable-transforms';
 import { SquadNamePipe } from '../../../squad-name.pipe';
-import { CreatEventService } from '../../../create-event.service';
+import { CreateEventService } from '../../../create-event.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -26,6 +25,7 @@ import { NgFor } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-create-dependency-ticket',
@@ -41,6 +41,7 @@ import { MatCardModule } from '@angular/material/card';
     NgFor,
     MatButtonToggleModule,
     MatCardModule,
+    MatTooltipModule
   ],
   templateUrl: './create-dependency-ticket.component.html',
   styleUrl: './create-dependency-ticket.component.scss',
@@ -51,7 +52,7 @@ export class CreateDependencyTicketComponent implements OnInit, OnDestroy {
   formGroup = new FormGroup({
     title: new FormControl<string>(null, Validators.required),
     squad: new FormControl<number>(null, Validators.required),
-    dependencyType: new FormControl<'dependency' | 'dependant'>(
+    dependencyType: new FormControl<'dependency' | 'dependant' | 'chained'>(
       null,
       Validators.required
     ),
@@ -64,7 +65,7 @@ export class CreateDependencyTicketComponent implements OnInit, OnDestroy {
     private store$: Store<any>,
     private matDialogRef: MatDialogRef<CreateDependencyTicketComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Ticket,
-    private createEventService: CreatEventService
+    private createEventService: CreateEventService
   ) {
     this.subscription = new Subscription();
     this.squadNamePipe = new SquadNamePipe(this.store$);
@@ -112,14 +113,15 @@ export class CreateDependencyTicketComponent implements OnInit, OnDestroy {
           title: this.formGroup.value.title,
         },
         {
-          dependantTicketId:
-            this.formGroup.value.dependencyType === 'dependant'
+          dependantTicketId:this.formGroup.value.dependencyType === 'dependant'
+            ? this.data.ticketId
+            : this.formGroup.value.dependencyType === 'chained' 
               ? this.data.ticketId
               : undefined,
-          dependencyTicketId:
-            this.formGroup.value.dependencyType === 'dependency'
-              ? this.data.ticketId
-              : undefined,
+          dependencyTicketId: this.formGroup.value.dependencyType === 'dependency'
+            ? this.data.ticketId
+            : undefined,
+          inSameSprint: this.formGroup.value.dependencyType === 'chained'
         }
       );
       this.matDialogRef.close();
@@ -128,5 +130,17 @@ export class CreateDependencyTicketComponent implements OnInit, OnDestroy {
 
   cancel(): void {
     this.matDialogRef.close();
+  }
+
+  getDependencyTooltip() {
+    return $localize`"${this.formGroup.value.title}" has to be completed before "${this.data.title}"`;
+  }
+
+  getDependantTooltip() {
+    return $localize`"${this.formGroup.value.title}" can only be started, after "${this.data.title}" is complete`
+  }
+
+  getSameSprintTooltip() {
+    return $localize`"${this.formGroup.value.title}" and "${this.data.title}" have to be completed in the same sprint`;
   }
 }

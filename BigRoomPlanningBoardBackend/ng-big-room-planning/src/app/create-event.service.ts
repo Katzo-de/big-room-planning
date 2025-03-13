@@ -206,7 +206,8 @@ export class CreateEventService {
     event.title = ticket.title;
     event.predecessorId = ticket.predecessorId;
     event.dependencyTicketId = dependency.dependencyTicketId
-    event.dependantTicketId = dependency.dependantTicketId; 
+    event.dependantTicketId = dependency.dependantTicketId;
+    event.inSameSprint = dependency.inSameSprint;
 
     this.dataService.sendEvent(event);
   }

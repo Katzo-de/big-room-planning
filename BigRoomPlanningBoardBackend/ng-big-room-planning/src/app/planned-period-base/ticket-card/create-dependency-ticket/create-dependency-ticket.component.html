@@ -14,13 +14,17 @@
       </mat-select>
     </mat-form-field>
     <mat-button-toggle-group [hideSingleSelectionIndicator]="true" [formControlName]="'dependencyType'">
-      <mat-button-toggle value="dependency">
+      <mat-button-toggle [matTooltip]="getDependencyTooltip()" value="dependency">
         <mat-icon>keyboard_tab</mat-icon>
         <span style="margin-left: 0.5rem;" i18n>Dependency</span>
       </mat-button-toggle>
-      <mat-button-toggle value="dependant">
+      <mat-button-toggle [matTooltip]="getDependantTooltip()" value="dependant">
         <mat-icon>start</mat-icon>
         <span style="margin-left: 0.5rem;" i18n>Dependant</span>
+      </mat-button-toggle>
+      <mat-button-toggle [matTooltip]="getSameSprintTooltip()" value="chained">
+        <mat-icon>link</mat-icon>
+        <span style="margin-left: 0.5rem;" i18n>Chained</span>
       </mat-button-toggle>
     </mat-button-toggle-group>
   </form>
