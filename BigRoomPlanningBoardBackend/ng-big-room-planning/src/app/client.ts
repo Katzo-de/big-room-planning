@@ -663,6 +663,7 @@ export class AddDependencyTicketEvent extends Event implements IAddDependencyTic
     columnOrder?: number;
     predecessorId?: number | undefined;
     dependencyId?: number | undefined;
+    inSameSprint?: boolean;
     dependantTicketId?: number | undefined;
     dependencyTicketId?: number | undefined;
 
@@ -682,6 +683,7 @@ export class AddDependencyTicketEvent extends Event implements IAddDependencyTic
             this.columnOrder = _data["columnOrder"];
             this.predecessorId = _data["predecessorId"];
             this.dependencyId = _data["dependencyId"];
+            this.inSameSprint = _data["inSameSprint"];
             this.dependantTicketId = _data["dependantTicketId"];
             this.dependencyTicketId = _data["dependencyTicketId"];
         }
@@ -704,6 +706,7 @@ export class AddDependencyTicketEvent extends Event implements IAddDependencyTic
         data["columnOrder"] = this.columnOrder;
         data["predecessorId"] = this.predecessorId;
         data["dependencyId"] = this.dependencyId;
+        data["inSameSprint"] = this.inSameSprint;
         data["dependantTicketId"] = this.dependantTicketId;
         data["dependencyTicketId"] = this.dependencyTicketId;
         super.toJSON(data);
@@ -720,6 +723,7 @@ export interface IAddDependencyTicketEvent extends IEvent {
     columnOrder?: number;
     predecessorId?: number | undefined;
     dependencyId?: number | undefined;
+    inSameSprint?: boolean;
     dependantTicketId?: number | undefined;
     dependencyTicketId?: number | undefined;
 }

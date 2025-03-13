@@ -271,6 +271,9 @@ namespace BigRoomPlanningBoardBackend.Migrations
                     b.Property<int?>("DependencyTicketId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("InSameSprint")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("PlannedPeriodId")
                         .HasColumnType("INTEGER");
 
@@ -299,6 +302,9 @@ namespace BigRoomPlanningBoardBackend.Migrations
 
                             t.Property("DependencyTicketId")
                                 .HasColumnName("AddDependencyTicketEvent_DependencyTicketId");
+
+                            t.Property("InSameSprint")
+                                .HasColumnName("AddDependencyTicketEvent_InSameSprint");
                         });
 
                     b.HasDiscriminator().HasValue("AddDependencyTicketEvent");

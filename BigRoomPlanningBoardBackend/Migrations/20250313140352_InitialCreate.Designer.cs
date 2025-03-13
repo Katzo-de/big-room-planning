@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BigRoomPlanningBoardBackend.Migrations
 {
     [DbContext(typeof(BigRoomPlanningContext))]
-    [Migration("20250116094649_AddPropertyNoteToSquadSprintsStats")]
-    partial class AddPropertyNoteToSquadSprintsStats
+    [Migration("20250313140352_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,9 @@ namespace BigRoomPlanningBoardBackend.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("DependencyTicketId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("InSameSprint")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("DependencyId");
@@ -249,7 +252,65 @@ namespace BigRoomPlanningBoardBackend.Migrations
                     b.Property<int>("DependencyTicketId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("InSameSprint")
+                        .HasColumnType("INTEGER");
+
                     b.HasDiscriminator().HasValue("AddDependencyEvent");
+                });
+
+            modelBuilder.Entity("BigRoomPlanningBoardBackend.Events.Types.AddDependencyTicketEvent", b =>
+                {
+                    b.HasBaseType("BigRoomPlanningBoardBackend.Events.Event");
+
+                    b.Property<int>("ColumnOrder")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("DependantTicketId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("DependencyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("DependencyTicketId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("InSameSprint")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PlannedPeriodId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PredecessorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("SprintId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SquadId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("TicketId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.ToTable("Events", t =>
+                        {
+                            t.Property("DependantTicketId")
+                                .HasColumnName("AddDependencyTicketEvent_DependantTicketId");
+
+                            t.Property("DependencyId")
+                                .HasColumnName("AddDependencyTicketEvent_DependencyId");
+
+                            t.Property("DependencyTicketId")
+                                .HasColumnName("AddDependencyTicketEvent_DependencyTicketId");
+
+                            t.Property("InSameSprint")
+                                .HasColumnName("AddDependencyTicketEvent_InSameSprint");
+                        });
+
+                    b.HasDiscriminator().HasValue("AddDependencyTicketEvent");
                 });
 
             modelBuilder.Entity("BigRoomPlanningBoardBackend.Events.Types.AddOrUpdateSquadSprintStatsEvent", b =>
@@ -262,11 +323,23 @@ namespace BigRoomPlanningBoardBackend.Migrations
                     b.Property<double>("Capacity")
                         .HasColumnType("REAL");
 
+                    b.Property<string>("Note")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("SprintId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("SquadId")
                         .HasColumnType("INTEGER");
+
+                    b.ToTable("Events", t =>
+                        {
+                            t.Property("SprintId")
+                                .HasColumnName("AddOrUpdateSquadSprintStatsEvent_SprintId");
+
+                            t.Property("SquadId")
+                                .HasColumnName("AddOrUpdateSquadSprintStatsEvent_SquadId");
+                        });
 
                     b.HasDiscriminator().HasValue("AddOrUpdateSquadSprintStatsEvent");
                 });
@@ -289,6 +362,12 @@ namespace BigRoomPlanningBoardBackend.Migrations
 
                     b.Property<DateTime>("StartDay")
                         .HasColumnType("TEXT");
+
+                    b.ToTable("Events", t =>
+                        {
+                            t.Property("PlannedPeriodId")
+                                .HasColumnName("AddPlannedPeriodEvent_PlannedPeriodId");
+                        });
 
                     b.HasDiscriminator().HasValue("AddPlannedPeriodEvent");
                 });
@@ -414,14 +493,26 @@ namespace BigRoomPlanningBoardBackend.Migrations
 
                     b.ToTable("Events", t =>
                         {
+                            t.Property("ColumnOrder")
+                                .HasColumnName("AddTicketEvent_ColumnOrder");
+
                             t.Property("PlannedPeriodId")
                                 .HasColumnName("AddTicketEvent_PlannedPeriodId");
+
+                            t.Property("PredecessorId")
+                                .HasColumnName("AddTicketEvent_PredecessorId");
 
                             t.Property("SprintId")
                                 .HasColumnName("AddTicketEvent_SprintId");
 
                             t.Property("SquadId")
                                 .HasColumnName("AddTicketEvent_SquadId");
+
+                            t.Property("TicketId")
+                                .HasColumnName("AddTicketEvent_TicketId");
+
+                            t.Property("Title")
+                                .HasColumnName("AddTicketEvent_Title");
                         });
 
                     b.HasDiscriminator().HasValue("AddTicketEvent");
@@ -459,6 +550,16 @@ namespace BigRoomPlanningBoardBackend.Migrations
                     b.HasDiscriminator().HasValue("DeleteRiskEvent");
                 });
 
+            modelBuilder.Entity("BigRoomPlanningBoardBackend.Events.Types.DeleteSessionEvent", b =>
+                {
+                    b.HasBaseType("BigRoomPlanningBoardBackend.Events.Event");
+
+                    b.Property<string>("DeleteSessionId")
+                        .HasColumnType("TEXT");
+
+                    b.HasDiscriminator().HasValue("DeleteSessionEvent");
+                });
+
             modelBuilder.Entity("BigRoomPlanningBoardBackend.Events.Types.DeleteTicketEvent", b =>
                 {
                     b.HasBaseType("BigRoomPlanningBoardBackend.Events.Event");
@@ -473,6 +574,28 @@ namespace BigRoomPlanningBoardBackend.Migrations
                         });
 
                     b.HasDiscriminator().HasValue("DeleteTicketEvent");
+                });
+
+            modelBuilder.Entity("BigRoomPlanningBoardBackend.Events.Types.EditDependencyEvent", b =>
+                {
+                    b.HasBaseType("BigRoomPlanningBoardBackend.Events.Event");
+
+                    b.Property<int>("DependencyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("InSameSprint")
+                        .HasColumnType("INTEGER");
+
+                    b.ToTable("Events", t =>
+                        {
+                            t.Property("DependencyId")
+                                .HasColumnName("EditDependencyEvent_DependencyId");
+
+                            t.Property("InSameSprint")
+                                .HasColumnName("EditDependencyEvent_InSameSprint");
+                        });
+
+                    b.HasDiscriminator().HasValue("EditDependencyEvent");
                 });
 
             modelBuilder.Entity("BigRoomPlanningBoardBackend.Events.Types.EditPlannedPeriodEvent", b =>
