@@ -13,6 +13,7 @@ import {
   DeleteRiskEvent,
   DeleteSessionEvent,
   DeleteTicketEvent,
+  EditDependencyEvent,
   EditPlannedPeriodEvent,
   EditRiskEvent,
   EditSprintEvent,
@@ -55,6 +56,7 @@ export class CreateEventService {
 
   addDependency (dependency: IDependency) {
     const event = this.getBaseEvent(AddDependencyEvent);
+    event.inSameSprint = dependency.inSameSprint ?? false;
     event.dependantTicketId = dependency.dependantTicketId;
     event.dependencyTicketId = dependency.dependencyTicketId;
 
@@ -85,6 +87,14 @@ export class CreateEventService {
     event.startDay = plannedPeriod.startDay;
     event.endDay = plannedPeriod.endDay;
     event.bigRoomPlanningAt = plannedPeriod.bigRoomPlanningAt;
+
+    this.dataService.sendEvent(event);
+  }
+
+  editDependency (dependency: IDependency) {
+    const event = this.getBaseEvent(EditDependencyEvent);
+    event.dependencyId = dependency.dependencyId;
+    event.inSameSprint = dependency.inSameSprint ?? false;
 
     this.dataService.sendEvent(event);
   }

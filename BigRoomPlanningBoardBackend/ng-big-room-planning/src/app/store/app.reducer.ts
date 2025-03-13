@@ -29,6 +29,7 @@ import {
   eventDeleteDependency,
   eventDeleteRisk,
   eventDeleteTicket,
+  eventEditDependency,
   eventEditPlannedPeriod,
   eventEditRisk,
   eventEditSprint,
@@ -185,6 +186,16 @@ export const appReducer = createReducer(
                     ? action.plannedPeriod
                     : x
             )
+    })),
+    on(eventEditDependency, (state, action) => ({
+        ...state,
+        dependencies: [
+            ...state.dependencies.filter(x => x.dependencyId !== action.dependency.dependencyId),
+            new Dependency({
+                ...state.dependencies.find(x => x.dependencyId === action.dependency.dependencyId),
+                inSameSprint: action.dependency.inSameSprint,
+            })
+        ],
     })),
     on(eventEditRisk, (state, action) => ({
         ...state,

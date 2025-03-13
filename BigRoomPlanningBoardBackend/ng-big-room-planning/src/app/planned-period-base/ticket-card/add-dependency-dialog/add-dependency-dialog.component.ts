@@ -66,9 +66,13 @@ import {
 import {
   MatDividerModule
 } from '@angular/material/divider';
+import {
+  MatButtonToggleModule
+} from '@angular/material/button-toggle';
 
 interface TicketWithDetails extends ITicket {
   dependencyType: 'dependency' | 'dependant' | 'none';
+  inSameSprint?: boolean;
   /**
    * Determines if that dependency is fullfilled or critical
    */
@@ -93,13 +97,14 @@ interface TicketWithDetails extends ITicket {
     IterationNamePipe,
     SquadNamePipe,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    MatButtonToggleModule
   ],
   templateUrl: './add-dependency-dialog.component.html',
   styleUrl: './add-dependency-dialog.component.scss'
 })
 export class AddDependencyDialogComponent implements OnInit {
-
+  
   formGroup = new FormGroup({
     squad: new FormControl<number>(null),
     sprints: new FormControl<number[]>(null),
@@ -111,7 +116,6 @@ export class AddDependencyDialogComponent implements OnInit {
   sprintFilter$: Observable<Sprint[]>;
 
   ticketList$: Observable<TicketWithDetails[]>;
-
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Ticket,
@@ -193,8 +197,6 @@ export class AddDependencyDialogComponent implements OnInit {
           )
           .map(ticket => {
 
-            console.log('inner',ticket)
-
             const dependantConnection = dependantConnections.find(x => x.dependencyTicketId === ticket.ticketId);
 
             if (dependantConnection) {
@@ -208,12 +210,18 @@ export class AddDependencyDialogComponent implements OnInit {
               } else {
                 const dependencySprint = sprints.find(s => s.sprintId === ticket.sprintId);
                 const dependantSprint = sprints.find(s => s.sprintId === this.data.sprintId);
-                fullfilled = dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+
+                if (dependantConnection.inSameSprint) {
+                  fullfilled = dependencySprint.sprintId === dependantSprint.sprintId
+                } else {
+                  fullfilled = dependencySprint.sprintId !== dependantSprint.sprintId && dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+                }
               }
               
               const result: TicketWithDetails = {
                 ...ticket,
                 dependencyType: 'dependant',
+                inSameSprint: dependantConnection.inSameSprint,
                 dependencyId: dependantConnection.dependencyId,
                 fullfilled
               };
@@ -234,12 +242,18 @@ export class AddDependencyDialogComponent implements OnInit {
               } else {
                 const dependencySprint = sprints.find(s => s.sprintId === this.data.sprintId);
                 const dependantSprint = sprints.find(s => s.sprintId === ticket.sprintId);
-                fullfilled = dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+
+                if (dependencyConenction.inSameSprint) {
+                  fullfilled = dependantSprint.sprintId === dependencySprint.sprintId;
+                } else {
+                  fullfilled = dependantSprint.sprintId !== dependencySprint.sprintId && dependencySprint.endsAt.getTime() < dependantSprint.startsAt.getTime();
+                }
               }
 
               const result: TicketWithDetails = {
                 ...ticket,
                 dependencyType: 'dependency',
+                inSameSprint: dependencyConenction.inSameSprint,
                 dependencyId: dependencyConenction.dependencyId,
                 fullfilled
               };
@@ -280,18 +294,43 @@ export class AddDependencyDialogComponent implements OnInit {
     return $localize`"${ticket.title}" can only be started, after "${this.data.title}" is complete`
   }
 
-  addAsDependency(ticket: ITicket) {
-    this.createEventService.addDependency({
-      dependencyTicketId: ticket.ticketId,
-      dependantTicketId: this.data.ticketId
-    });
+  getSameSprintTooltip(ticket: ITicket) {
+    return $localize`"${ticket.title}" and "${this.data.title}" have to be completed in the same sprint`;
   }
 
-  addAsDependant(ticket: ITicket) {
-    this.createEventService.addDependency({
-      dependencyTicketId: this.data.ticketId,
-      dependantTicketId: ticket.ticketId
-    });
+  addDependency(ticket: TicketWithDetails, type: "dependency" | "dependant" | "sameSprint" | "none") {
+    switch (type) {
+      case 'dependant':
+        if (ticket.dependencyType == 'dependency') return;
+        this.createEventService.addDependency({
+          dependencyTicketId: this.data.ticketId,
+          inSameSprint: false,
+          dependantTicketId: ticket.ticketId
+        });
+        ticket.dependencyType = 'dependant';
+        break;
+      case 'dependency':
+        if (ticket.dependencyType == 'dependant') return;
+        this.createEventService.addDependency({
+          dependencyTicketId: ticket.ticketId,
+          inSameSprint: false,
+          dependantTicketId: this.data.ticketId
+        });
+        ticket.dependencyType = 'dependency';
+        break;
+      case 'sameSprint':
+        if (ticket.inSameSprint) return;
+        this.createEventService.addDependency({
+          dependencyTicketId: ticket.ticketId,
+          inSameSprint: true,
+          dependantTicketId: this.data.ticketId
+        });
+        ticket.inSameSprint = true;
+        break;
+      default:
+      case 'none':
+        break;
+    }
   }
 
   deleteDependency(dependencyId: number) {

@@ -65,10 +65,13 @@
     .dependency {
       margin-left: auto;
       .active {
+        background-color: var(--sys-error-container);
         color: var(--sys-error);
 
         &.fullfilled {
-          color: var(--md-extended-color-accept-color);
+          color: var(--md-extended-color-accept-color-on-container);
+          background-color: var(--md-extended-color-accept-color-container);
+
         }
       }
     }
