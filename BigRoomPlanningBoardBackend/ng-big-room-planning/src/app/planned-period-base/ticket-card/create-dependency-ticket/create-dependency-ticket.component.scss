@@ -1,0 +1,14 @@
+form {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  width: 100%;
+}
+
+mat-button-toggle {
+  flex: 1 1 auto;
+}
+
+.info-card {
+  margin-top: 1rem;
+}

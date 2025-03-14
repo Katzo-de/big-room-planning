@@ -76,4 +76,15 @@
       }
     }
   }
+  .createDependencyTicket {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 0.5rem 1rem;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--sys-on-surface-container);
+    background-color: var(--sys-surface-container);
+    border-bottom-left-radius: var(--mdc-filled-text-field-container-shape);
+    border-bottom-right-radius: var(--mdc-filled-text-field-container-shape);
+  }
 }

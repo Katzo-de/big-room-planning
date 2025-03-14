@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import {
   AddDependencyEvent,
+  AddDependencyTicketEvent,
   AddOrUpdateSquadSprintStatsEvent,
   AddPlannedPeriodEvent,
   AddRiskEvent,
@@ -181,7 +182,7 @@ export class CreateEventService {
 
     this.dataService.sendEvent(event);
   }
-
+  //#region AddTicket
   addTicket (ticket: ITicket) {
     const event = this.getBaseEvent(AddTicketEvent)
     event.squadId = ticket.squadId;
@@ -193,6 +194,24 @@ export class CreateEventService {
 
     this.dataService.sendEvent(event);
   }
+  //#endregion
+
+  //#region AddDependencyTicket
+  addDependencyTicket(ticket: ITicket, dependency: IDependency) {
+    const event = this.getBaseEvent(AddDependencyTicketEvent)
+    event.squadId = ticket.squadId;
+    event.plannedPeriodId = ticket.plannedPeriodId;
+    event.sprintId = ticket.sprintId;
+    event.columnOrder = ticket.columnOrder;
+    event.title = ticket.title;
+    event.predecessorId = ticket.predecessorId;
+    event.dependencyTicketId = dependency.dependencyTicketId
+    event.dependantTicketId = dependency.dependantTicketId;
+    event.inSameSprint = dependency.inSameSprint;
+
+    this.dataService.sendEvent(event);
+  }
+  //#endregion
 
   deleteTicket (ticketId: number) {
     const event = this.getBaseEvent(DeleteTicketEvent)
