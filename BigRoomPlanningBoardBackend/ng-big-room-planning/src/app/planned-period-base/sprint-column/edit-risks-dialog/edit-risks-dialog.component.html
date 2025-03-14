@@ -27,14 +27,10 @@
                     </button>
                 } @else {
                     <button mat-stroked-button (click)="setAccepted(risk, false)">
-                        <div class="normal">
-                            <mat-icon>check</mat-icon>
-                            <ng-container i18n>Accepted</ng-container>
-                        </div>
-                        <div class="hover">
-                            <mat-icon>close</mat-icon>
-                            <ng-container i18n>Reopend</ng-container>
-                        </div>
+                        <mat-icon class="normal">check</mat-icon>
+                        <span class="normal" i18n>Accepted</span>
+                        <mat-icon class="hover">close</mat-icon>
+                        <span class="hover" i18n>Reopen</span>
                     </button>
                 }
                 <button mat-button (click)="editText(risk)" i18n>Edit</button>
