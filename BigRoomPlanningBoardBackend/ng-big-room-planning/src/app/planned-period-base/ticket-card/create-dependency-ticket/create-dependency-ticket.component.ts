@@ -113,12 +113,12 @@ export class CreateDependencyTicketComponent implements OnInit, OnDestroy {
           title: this.formGroup.value.title,
         },
         {
-          dependantTicketId:this.formGroup.value.dependencyType === 'dependant'
+          dependantTicketId: this.formGroup.value.dependencyType === 'dependency'
             ? this.data.ticketId
             : this.formGroup.value.dependencyType === 'chained' 
               ? this.data.ticketId
               : undefined,
-          dependencyTicketId: this.formGroup.value.dependencyType === 'dependency'
+          dependencyTicketId: this.formGroup.value.dependencyType === 'dependant'
             ? this.data.ticketId
             : undefined,
           inSameSprint: this.formGroup.value.dependencyType === 'chained'
