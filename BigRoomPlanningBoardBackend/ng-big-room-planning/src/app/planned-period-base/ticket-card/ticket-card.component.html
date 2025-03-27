@@ -40,6 +40,7 @@
 <ng-template #contextMenu>
     <div class="example-menu" cdkMenu>
         <button class="example-menu-item" cdkMenuItem (click)="edit()" i18n>Edit</button>
+        <button class="example-menu-item" cdkMenuItem (click)="addTicketAnotherSprint()" i18n>Duplicate in another sprint</button>
         <button class="example-menu-item" cdkMenuItem (click)="addDependency()" i18n>Edit Dependencies</button>
         <button class="example-menu-item" cdkMenuItem (click)="createDependencyTicket()" i18n>Create Dependency Ticket</button>
         <button class="example-menu-item" cdkMenuItem (click)="delete()" i18n>Delete</button>

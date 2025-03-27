@@ -54,6 +54,7 @@ import {
 import { CreateDependencyTicketComponent } from './create-dependency-ticket/create-dependency-ticket.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
+import { DuplicateTicketDialogComponent } from './duplicate-ticket-dialog/duplicate-ticket-dialog.component';
 
 interface DependencyWithInfo extends IDependency {
   fullfilled: boolean;
@@ -286,6 +287,13 @@ export class TicketCardComponent implements OnChanges {
 
   edit() {
     this.matDialog.open(EditTicketDialogComponent, {
+      data: this.ticket,
+      disableClose: true
+    })
+  }
+
+  addTicketAnotherSprint(): void {
+    this.matDialog.open(DuplicateTicketDialogComponent, {
       data: this.ticket,
       disableClose: true
     })
