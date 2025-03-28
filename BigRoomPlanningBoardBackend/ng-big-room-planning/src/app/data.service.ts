@@ -67,8 +67,6 @@ export class DataService {
     private connectionService: ConnectionService,
     private processEventService: ProcessEventService
   ) {
-    this.queue.length()
-    
     this.connectionService.onRecieveFullData((events: IBRPFullData) => {
       this.recieveFullData(events);
     });

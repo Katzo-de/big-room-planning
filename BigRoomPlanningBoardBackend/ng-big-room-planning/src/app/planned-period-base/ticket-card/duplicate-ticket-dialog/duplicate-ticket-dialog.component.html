@@ -1,14 +1,14 @@
 <h2 mat-dialog-title i18n>Duplicate Ticket: {{data.title}}</h2>
 <mat-dialog-content>
-  <form [formGroup]="formGroup">
+  <form [formGroup]="formGroup" style="display: flex; flex-direction: column; gap: 0.5rem;">
     <mat-form-field>
       <mat-label>Title</mat-label>
       <input matInput formControlName="ticketName"/>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Sprint</mat-label>
-      <mat-select formControlName="sprintId">
-        @for (sprint of sprintFilter$ | async; track $index) {
+      <mat-select multiple formControlName="sprintIds">
+        @for (sprint of sprintFilterValues$ | async; track $index) {
           <mat-option [value]="sprint.sprintId">{{ sprint.name }}</mat-option>
         }
       </mat-select>

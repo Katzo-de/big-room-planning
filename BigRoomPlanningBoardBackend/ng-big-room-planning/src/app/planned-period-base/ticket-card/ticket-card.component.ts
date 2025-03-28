@@ -2,6 +2,7 @@ import {
   CdkContextMenuTrigger,
   CdkMenu,
   CdkMenuItem,
+  CdkMenuTrigger,
 } from '@angular/cdk/menu';
 import { AsyncPipe } from '@angular/common';
 import {
@@ -15,7 +16,7 @@ import {
   MatCardContent,
   MatCardHeader,
 } from '@angular/material/card';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 
 import {
@@ -55,6 +56,8 @@ import { CreateDependencyTicketComponent } from './create-dependency-ticket/crea
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
 import { DuplicateTicketDialogComponent } from './duplicate-ticket-dialog/duplicate-ticket-dialog.component';
+import { MatDivider } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 interface DependencyWithInfo extends IDependency {
   fullfilled: boolean;
@@ -69,12 +72,16 @@ interface DependencyWithInfo extends IDependency {
     MatCardContent,
     AsyncPipe,
     CdkMenu,
+    MatDivider,
     CdkMenuItem,
+    CdkMenuTrigger,
     CdkContextMenuTrigger,
     MatIcon,
+    MatDialogModule,
     SquadNamePipe,
     MatChipsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatButtonModule
   ],
   templateUrl: './ticket-card.component.html',
   styleUrl: './ticket-card.component.scss'
@@ -295,7 +302,7 @@ export class TicketCardComponent implements OnChanges {
   addTicketAnotherSprint(): void {
     this.matDialog.open(DuplicateTicketDialogComponent, {
       data: this.ticket,
-      disableClose: true
+      disableClose: false
     })
   }
 
@@ -306,7 +313,7 @@ export class TicketCardComponent implements OnChanges {
       width: '60rem',
       maxWidth: '60vw',
       data: this.ticket,
-      disableClose: true
+      disableClose: false
     });
   }
 
@@ -316,12 +323,16 @@ export class TicketCardComponent implements OnChanges {
       width: '40rem',
       maxWidth: '60vw',
       data: this.ticket,
-      disableClose: true
+      disableClose: false
     })
   }
 
-  delete() {
-    this.createEventServie.deleteTicket(this.ticket.ticketId);
+  deleteTicket(template): void {
+    this.matDialog.open(template, {disableClose: false}).afterClosed().subscribe(result => {
+      if(result) {
+        this.createEventServie.deleteTicket(this.ticket.ticketId);
+      }
+    });
   }
 
   mouseEnter() {

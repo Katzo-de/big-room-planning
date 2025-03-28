@@ -47,10 +47,14 @@ mat-card-header {
 .example-menu {
   display: inline-flex;
   flex-direction: column;
+  padding: 0.5rem;
+  gap: 0.25rem;
   min-width: 180px;
   max-width: 280px;
-  background-color: var(--sys-surface-container);
-  padding: 6px 0;
+  background-color: var(--sys-surface-container-high);
+  border-color: var(--sys-surface-container-high);
+  border-radius: var(--mdc-elevated-card-container-shape, var(--mat-sys-corner-medium));
+  box-shadow: var(--mdc-elevated-card-container-elevation, var(--mat-sys-level1));
 }
 
 .example-menu-item {
@@ -71,7 +75,7 @@ mat-card-header {
 }
 
 .example-menu-item:hover {
-  background-color: var(--sys-surface-container-high);
+  background-color: var(--sys-surface-container-highest);
 }
 
 .example-menu-item:active {

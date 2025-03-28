@@ -40,9 +40,31 @@
 <ng-template #contextMenu>
     <div class="example-menu" cdkMenu>
         <button class="example-menu-item" cdkMenuItem (click)="edit()" i18n>Edit</button>
-        <button class="example-menu-item" cdkMenuItem (click)="addTicketAnotherSprint()" i18n>Duplicate in another sprint</button>
-        <button class="example-menu-item" cdkMenuItem (click)="addDependency()" i18n>Edit Dependencies</button>
-        <button class="example-menu-item" cdkMenuItem (click)="createDependencyTicket()" i18n>Create Dependency Ticket</button>
-        <button class="example-menu-item" cdkMenuItem (click)="delete()" i18n>Delete</button>
+        <mat-divider></mat-divider>
+        <button class="example-menu-item" cdkMenuItem [cdkMenuTriggerFor]="DependencyContextMenu" i18n>
+            Dependency
+        </button>
+        <mat-divider></mat-divider>
+        <button class="example-menu-item" cdkMenuItem (click)="addTicketAnotherSprint()" i18n>Duplicate</button>
+        <button class="example-menu-item" cdkMenuItem (click)="deleteTicket(confirm_deleteTicket_dialog)" i18n>Delete</button>
     </div>
+</ng-template>
+
+<ng-template #DependencyContextMenu>
+    <div class="example-menu" cdkMenu>
+        <button class="example-menu-item" cdkMenuItem (click)="addDependency()" i18n>Edit</button>
+        <button class="example-menu-item" cdkMenuItem (click)="createDependencyTicket()" i18n>Create Ticket</button>
+    </div>
+</ng-template>
+
+
+<ng-template #confirm_deleteTicket_dialog>
+    <h2 mat-dialog-title i18n>Delete Ticket: {{ticket?.title}}</h2>
+    <mat-dialog-content>
+        <p i18n>Are you sure you want to delete this ticket?</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close i18n>Cancel</button>
+        <button mat-flat-button [mat-dialog-close]="true" i18n>Delete</button>
+    </mat-dialog-actions>
 </ng-template>

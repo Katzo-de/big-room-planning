@@ -2,13 +2,25 @@
 <mat-dialog-content>
     <form class="d-flex flex-column form-column" style="margin-top: 1rem;" [formGroup]="formGroup" (ngSubmit)="saveClick()">
         <div i18n>Capacity</div>
-        <mat-slider [step]="0.5" [min]="0" [max]="100" discrete [displayWith]="formatLabel">
-            <input matSliderThumb [formControlName]="'capacity'">
-        </mat-slider>
+        <div class="d-flex flex-row">
+            <mat-slider style="flex-grow: 1;" [step]="0.5" [min]="0" [max]="100" discrete [displayWith]="formatLabel">
+                <input matSliderThumb [formControlName]="'capacity'">
+            </mat-slider>
+            <mat-form-field style="width: 6rem;" appearance="outline">
+                <mat-label>%</mat-label>
+                <input matInput [formControlName]="'capacity'" type="number">
+              </mat-form-field>
+        </div>
         <div i18n>Background Noise</div>
-        <mat-slider [step]="0.5" [min]="0" [max]="100" discrete [displayWith]="formatLabel">
-            <input matSliderThumb [formControlName]="'backgroundNoise'">
-        </mat-slider>
+        <div class="d-flex flex-row">
+            <mat-slider style="flex-grow: 1;" [step]="0.5" [min]="0" [max]="100" discrete [displayWith]="formatLabel">
+                <input matSliderThumb  formControlName="backgroundNoise">
+            </mat-slider>
+            <mat-form-field style="width: 6rem;" appearance="outline">
+                <mat-label>%</mat-label>
+                <input matInput  formControlName="backgroundNoise" type="number">
+              </mat-form-field>
+            </div>
         <mat-form-field>
             <mat-label>Note</mat-label>
             <textarea matInput formControlName="note"></textarea>

@@ -12,14 +12,13 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { select, Store } from '@ngrx/store';
 import { Sprint, Ticket } from '../../../client';
 import { CreateEventService } from '../../../create-event.service';
-import { map, Observable, switchMap } from 'rxjs';
+import { first, map, Observable, switchMap } from 'rxjs';
 import { getPlannedPeriods, getSprints } from '../../../store/app.selectors';
 import create from '@kahmannf/iterable-transforms';
 import { AsyncPipe } from '@angular/common';
@@ -47,10 +46,12 @@ export class DuplicateTicketDialogComponent implements OnInit {
    */
   formGroup = new FormGroup({
     ticketName: new FormControl('', Validators.required),
-    sprintId: new FormControl<number>(-1, Validators.required),
+    sprintIds: new FormControl<number[]>([-1], Validators.required),
   });
 
-  sprintFilter$: Observable<Sprint[]>;
+  private sprintFilter$: Observable<Sprint[]>;
+  sprintFilterValues$: Observable<Sprint[]>;
+
 
   constructor(
     private store$: Store<any>,
@@ -63,6 +64,11 @@ export class DuplicateTicketDialogComponent implements OnInit {
    * The sprint filter observable.
    */
   ngOnInit(): void {
+
+    this.formGroup.patchValue({
+      ticketName: this.data.title,
+    })
+
     const plannedPeriod$ = this.store$.pipe(
       select(getPlannedPeriods),
       map(periods => periods.find(x => x.plannedPeriodId === this.data.plannedPeriodId))
@@ -85,17 +91,31 @@ export class DuplicateTicketDialogComponent implements OnInit {
         }),
         ...sprints
       ]))
-    )
+    );
+
+    this.sprintFilterValues$ = this.sprintFilter$.pipe(map(sprints => sprints.filter(x => x.sprintId !== (this.data.sprintId ?? -1))));
+
+
+    this.sprintFilter$.pipe(first()).subscribe(sprints => {
+      this.formGroup.patchValue({
+        sprintIds: [sprints[sprints.indexOf(sprints.find(x => x.sprintId === this.data.sprintId)) + 1].sprintId]
+      })
+    })
   }
 
   createDuplicateTicket() {
-    throw new Error('Method not implemented.');
-
-    this.createEventService.addTicket({
-      title: this.formGroup.controls.ticketName.value,
-      sprintId: this.formGroup.controls.sprintId.value,
-      ...this.data
+    if (this.formGroup.invalid) {
+      return;
+    }
+    this.formGroup.controls.sprintIds.value.forEach(sprintId => {
+      this.createEventService.addTicket({
+        ...this.data,
+        title: this.formGroup.controls.ticketName.value,
+        sprintId: sprintId,
+        ticketId: -1
+      });
     });
+    this.cancel();
   }
 
   /**
