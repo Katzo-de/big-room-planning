@@ -36,7 +36,7 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     MatButton,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
   templateUrl: './edit-squad-sprint-stats-dialog.component.html',
   styleUrl: './edit-squad-sprint-stats-dialog.component.scss'
@@ -54,7 +54,12 @@ export class EditSquadSprintStatsDialogComponent implements OnInit {
     private matDialogRef: MatDialogRef<EditSquadSprintStatsDialogComponent>,
     private createEventService: CreateEventService
   ) {
-
+    this.formGroup.controls.backgroundNoise.valueChanges.subscribe(value => {
+      this.formGroup.controls.backgroundNoise.setValue(value, { emitEvent: false });
+    });
+    this.formGroup.controls.capacity.valueChanges.subscribe(value => {
+      this.formGroup.controls.capacity.setValue(value, { emitEvent: false });
+    });
   }
 
   ngOnInit(): void {
