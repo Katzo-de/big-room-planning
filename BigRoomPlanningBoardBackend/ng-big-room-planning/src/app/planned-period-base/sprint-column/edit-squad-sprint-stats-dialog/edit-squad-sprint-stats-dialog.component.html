@@ -7,18 +7,18 @@
                 <input matSliderThumb [formControlName]="'capacity'">
             </mat-slider>
             <mat-form-field style="width: 6rem;" appearance="outline">
-                <mat-label>%</mat-label>
+                <span matTextSuffix>%</span>
                 <input matInput [formControlName]="'capacity'" type="number">
               </mat-form-field>
         </div>
         <div i18n>Background Noise</div>
         <div class="d-flex flex-row">
             <mat-slider style="flex-grow: 1;" [step]="0.5" [min]="0" [max]="100" discrete [displayWith]="formatLabel">
-                <input matSliderThumb  formControlName="backgroundNoise">
+                <input matSliderThumb formControlName="backgroundNoise">
             </mat-slider>
             <mat-form-field style="width: 6rem;" appearance="outline">
-                <mat-label>%</mat-label>
-                <input matInput  formControlName="backgroundNoise" type="number">
+                <span matTextSuffix>%</span>
+                <input matInput formControlName="backgroundNoise" type="number">
               </mat-form-field>
             </div>
         <mat-form-field>
